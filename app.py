@@ -30,7 +30,7 @@ def handle_error(exception):
 
 
 @app.errorhandler(TRError)
-def handle_error(exception):
+def handle_tr_error(exception):
     return jsonify_error(exception.json)
 
 

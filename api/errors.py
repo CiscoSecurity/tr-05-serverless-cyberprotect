@@ -1,4 +1,3 @@
-import json
 
 INVALID_ARGUMENT = 'invalid argument'
 UNKNOWN = 'unknown'
