@@ -11,7 +11,9 @@ enrich_api = Blueprint('enrich', __name__)
 
 def validate_cyberprotect_output(cyberprotect_input):
     url = url_for(cyberprotect_input)
-    return get_response_data(requests.get(url))
+    return get_response_data(
+        requests.get(url, headers=current_app.config['CYBERPROTECT_HEADERS'])
+    )
 
 
 def group_observables(relay_input):

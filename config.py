@@ -7,6 +7,11 @@ class Config:
     CYBERPROTECT_API_URL = \
         'https://threatscore.cyberprotect.fr/api/score/{observable}'
 
+    CYBERPROTECT_HEADERS = {
+        'User-Agent': ('Cisco Threat Response Integrations '
+                       '<tr-integrations-support@cisco.com>')
+    }
+
     CYBERPROTECT_SOURCE_NAME = 'Threatscore Cyberprotect'
 
     CYBERPROTECT_HEALTH_CHECK_IP = '127.0.0.100'
