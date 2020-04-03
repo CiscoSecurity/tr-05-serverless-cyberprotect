@@ -32,7 +32,7 @@ def group_observables(relay_input):
 
 
 def get_cyberprotect_outputs(observables):
-    # Return list of responses from AbuseIPDB for all observables
+    # Return list of responses from Cyberprotect for all observables
 
     outputs = []
     for observable in observables:
