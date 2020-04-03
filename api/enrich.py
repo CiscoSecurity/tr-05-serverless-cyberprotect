@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta
-from uuid import uuid4
 
 import requests
 from flask import Blueprint, current_app

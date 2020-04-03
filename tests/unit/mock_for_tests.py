@@ -11,7 +11,8 @@ CYBERPROTECT_RESPONSE = {
             "name": "Australia"
         }
     },
-    "signature": "f9e779c8cefd81cbc3824564e7e0aec121547eeaaf210d5b7a3442f02761b940",
+    "signature":
+        "f9e779c8cefd81cbc3824564e7e0aec121547eeaaf210d5b7a3442f02761b940",
     "data": "1.1.1.1",
     "types": [
         "ip"
