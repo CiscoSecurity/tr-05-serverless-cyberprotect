@@ -1,0 +1,10 @@
+[
+  {
+    "type": "ip",
+    "value": "1.1.1.1"
+  },
+  {
+    "type": "domain",
+    "value": "google.com"
+  }
+]
