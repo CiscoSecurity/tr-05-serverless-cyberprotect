@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from uuid import uuid4
 
 import requests
 from flask import Blueprint, current_app
@@ -89,6 +90,47 @@ def extract_verdicts(output, score):
     return doc
 
 
+def extract_judgement(output, details):
+    disposition, disposition_name = get_disposition(details['score'])
+
+    start_time = datetime.strptime(details['date'], '%Y-%m-%dT%H:%M:%S.%fZ')
+    end_time = start_time + timedelta(
+        days=current_app.config['CTIM_VALID_DAYS_PERIOD'])
+
+    valid_time = {
+        'start_time': start_time.isoformat(timespec='microseconds') + 'Z',
+        'end_time': end_time.isoformat(timespec='microseconds') + 'Z',
+    }
+
+    observable = {
+        'value': output['observable']['value'],
+        'type': output['observable']['type']
+    }
+
+    judgement_id = f'transient:{uuid4()}'
+
+    external_reference = {
+        'source_name': current_app.config['CYBERPROTECT_SOURCE_NAME'],
+        'url': current_app.config['CYBERPROTECT_UI_URL'].format(
+            observable=output['observable']['value']),
+        'external_ids': details['engineId']
+    }
+
+    doc = {
+        'id': judgement_id,
+        'observable': observable,
+        'disposition': disposition,
+        'disposition_name': disposition_name,
+        'valid_time': valid_time,
+        'source_uri': current_app.config['CYBERPROTECT_API_URL'].format(
+            observable=output['observable']['value']),
+        'external_references': [external_reference],
+        **current_app.config['CTIM_JUDGEMENT_DEFAULTS']
+    }
+
+    return doc
+
+
 def format_docs(docs):
     return {'count': len(docs), 'docs': docs}
 
@@ -131,16 +173,21 @@ def observe_observables():
     cyberprotect_outputs = get_cyberprotect_outputs(observables)
 
     verdicts = []
+    judgements = []
     for output in cyberprotect_outputs:
         for score in output['scores']:
             # need to check because [[]] return in output  if don't have scores
             if score:
                 verdicts.append(extract_verdicts(output, score))
+                for details in score['details']:
+                    judgements.append(extract_judgement(output, details))
 
     relay_output = {}
 
     if verdicts:
         relay_output['verdicts'] = format_docs(verdicts)
+    if judgements:
+        relay_output['judgements'] = format_docs(judgements)
 
     return jsonify_data(relay_output)
 
