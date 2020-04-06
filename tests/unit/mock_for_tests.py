@@ -130,14 +130,6 @@ EXPECTED_RESPONSE_OBSERVE = {
                     'confidence': 'Medium',
                     'disposition': 5,
                     'disposition_name': 'Unknown',
-                    'external_references': [
-                        {
-                            'external_ids': '0092293a2e6b3ada22c681617520e124',
-                            'source_name': 'Threatscore Cyberprotect',
-                            'url': 'https://threatscore.cyberprotect.fr/'
-                                   'search?query=1.1.1.1'
-                        }
-                    ],
                     'observable': {
                         'type': 'ip',
                         'value': '1.1.1.1'
@@ -147,7 +139,7 @@ EXPECTED_RESPONSE_OBSERVE = {
                     'severity': 'Medium',
                     'source': 'Threatscore Cyberprotect',
                     'source_uri': 'https://threatscore.cyberprotect.fr/'
-                                  'api/score/1.1.1.1',
+                                  'search?query=1.1.1.1',
                     'type': 'judgement',
                     'valid_time': {
                         'end_time': '2020-04-10T10:15:17.281000Z',
@@ -158,14 +150,6 @@ EXPECTED_RESPONSE_OBSERVE = {
                     'confidence': 'Medium',
                     'disposition': 2,
                     'disposition_name': 'Malicious',
-                    'external_references': [
-                        {
-                            'external_ids': 'f06549a927164a3f2e336977a41794c8',
-                            'source_name': 'Threatscore Cyberprotect',
-                            'url': 'https://threatscore.cyberprotect.fr/'
-                                   'search?query=1.1.1.1'
-                        }
-                    ],
                     'observable': {
                         'type': 'ip',
                         'value': '1.1.1.1'
@@ -175,7 +159,7 @@ EXPECTED_RESPONSE_OBSERVE = {
                     'severity': 'Medium',
                     'source': 'Threatscore Cyberprotect',
                     'source_uri': 'https://threatscore.cyberprotect.fr/'
-                                  'api/score/1.1.1.1',
+                                  'search?query=1.1.1.1',
                     'type': 'judgement',
                     'valid_time': {
                         'end_time': '2020-04-10T10:15:17.281000Z',
@@ -186,14 +170,6 @@ EXPECTED_RESPONSE_OBSERVE = {
                     'confidence': 'Medium',
                     'disposition': 3,
                     'disposition_name': 'Suspicious',
-                    'external_references': [
-                        {
-                            'external_ids': '558a885ad3bb9fe8c84629c39ea64431',
-                            'source_name': 'Threatscore Cyberprotect',
-                            'url': 'https://threatscore.cyberprotect.fr/'
-                                   'search?query=1.1.1.1'
-                        }
-                    ],
                     'observable': {
                         'type': 'ip',
                         'value': '1.1.1.1'
@@ -203,7 +179,7 @@ EXPECTED_RESPONSE_OBSERVE = {
                     'severity': 'Medium',
                     'source': 'Threatscore Cyberprotect',
                     'source_uri': 'https://threatscore.cyberprotect.fr/'
-                                  'api/score/1.1.1.1',
+                                  'search?query=1.1.1.1',
                     'type': 'judgement',
                     'valid_time': {
                         'end_time': '2020-04-10T10:15:17.281000Z',
@@ -214,14 +190,6 @@ EXPECTED_RESPONSE_OBSERVE = {
                     'confidence': 'Medium',
                     'disposition': 1,
                     'disposition_name': 'Clean',
-                    'external_references': [
-                        {
-                            'external_ids': 'a8451f72cbe670c3d971157a2b73be0e',
-                            'source_name': 'Threatscore Cyberprotect',
-                            'url': 'https://threatscore.cyberprotect.fr/'
-                                   'search?query=1.1.1.1'
-                        }
-                    ],
                     'observable': {
                         'type': 'ip',
                         'value': '1.1.1.1'
@@ -231,7 +199,7 @@ EXPECTED_RESPONSE_OBSERVE = {
                     'severity': 'Medium',
                     'source': 'Threatscore Cyberprotect',
                     'source_uri': 'https://threatscore.cyberprotect.fr/'
-                                  'api/score/1.1.1.1',
+                                  'search?query=1.1.1.1',
                     'type': 'judgement',
                     'valid_time': {
                         'end_time': '2020-04-10T10:15:17.281000Z',

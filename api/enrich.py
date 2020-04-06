@@ -109,22 +109,14 @@ def extract_judgement(output, details):
 
     judgement_id = f'transient:{uuid4()}'
 
-    external_reference = {
-        'source_name': current_app.config['CYBERPROTECT_SOURCE_NAME'],
-        'url': current_app.config['CYBERPROTECT_UI_URL'].format(
-            observable=output['observable']['value']),
-        'external_ids': details['engineId']
-    }
-
     doc = {
         'id': judgement_id,
         'observable': observable,
         'disposition': disposition,
         'disposition_name': disposition_name,
         'valid_time': valid_time,
-        'source_uri': current_app.config['CYBERPROTECT_API_URL'].format(
+        'source_uri': current_app.config['CYBERPROTECT_UI_URL'].format(
             observable=output['observable']['value']),
-        'external_references': [external_reference],
         **current_app.config['CTIM_JUDGEMENT_DEFAULTS']
     }
 
