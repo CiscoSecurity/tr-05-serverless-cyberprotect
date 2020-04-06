@@ -1,5 +1,6 @@
 import json
 from typing import Optional
+from http import HTTPStatus
 
 from flask import request, current_app, jsonify
 
@@ -52,7 +53,7 @@ def get_response_data(response):
         return response.json()
 
     else:
-        if response.status_code == 404:
+        if response.status_code == HTTPStatus.NOT_FOUND:
             raise CyberprotectNotFoundError()
 
         else:

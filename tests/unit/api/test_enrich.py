@@ -39,12 +39,12 @@ def cyberprotect_api_response(*, ok, status_error=None):
         payload = CYBERPROTECT_RESPONSE
 
     else:
-        if status_error == 404:
+        if status_error == HTTPStatus.NOT_FOUND:
             payload = CYBERPROTECT_404_ERROR_RESPONSE_MOCK
-            mock_response.status_code = 404
-        elif status_error == 500:
+            mock_response.status_code = HTTPStatus.NOT_FOUND
+        elif status_error == HTTPStatus.INTERNAL_SERVER_ERROR:
             payload = CYBERPROTECT_500_ERROR_RESPONSE_MOCK
-            mock_response.status_code = 500
+            mock_response.status_code = HTTPStatus.INTERNAL_SERVER_ERROR
 
     mock_response.json = lambda: payload
 
@@ -58,7 +58,7 @@ def invalid_json():
 
 def test_enrich_call_with_invalid_json_failure(route, client, invalid_json):
     response = client.post(route, json=invalid_json)
-    assert response.status_code == 200
+    assert response.status_code == HTTPStatus.OK
 
 
 @fixture(scope='module')
@@ -94,7 +94,7 @@ def test_enrich_call_success(route, client, valid_json,
 
 def test_enrich_call_404(route, client, valid_json, cyberprotect_api_request):
     cyberprotect_api_request.return_value = \
-        cyberprotect_api_response(ok=False, status_error=404)
+        cyberprotect_api_response(ok=False, status_error=HTTPStatus.NOT_FOUND)
     response = client.post(route, json=valid_json)
     assert response.status_code == HTTPStatus.OK
     assert response.get_json() == EXPECTED_RESPONSE_404_ERROR
@@ -102,7 +102,8 @@ def test_enrich_call_404(route, client, valid_json, cyberprotect_api_request):
 
 def test_enrich_call_500(route, client, valid_json, cyberprotect_api_request):
     cyberprotect_api_request.return_value = \
-        cyberprotect_api_response(ok=False, status_error=500)
+        cyberprotect_api_response(
+            ok=False, status_error=HTTPStatus.INTERNAL_SERVER_ERROR)
     response = client.post(route, json=valid_json)
-    assert response.status_code == 200
+    assert response.status_code == HTTPStatus.OK
     assert response.get_json() == EXPECTED_RESPONSE_500_ERROR
