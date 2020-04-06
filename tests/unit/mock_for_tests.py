@@ -4,6 +4,63 @@ CYBERPROTECT_HEALTH_RESPONSE_MOCK = {
     "signature": "ff918fa60fd5b8a7abc6950307cf96e248667f191b2ac2ee0"
 }
 
+CYBERPROTECT_RESPONSE = {
+    "geo": {
+        "country": {
+            "code": "AU",
+            "name": "Australia"
+        }
+    },
+    "signature":
+        "f9e779c8cefd81cbc3824564e7e0aec121547eeaaf210d5b7a3442f02761b940",
+    "data": "1.1.1.1",
+    "types": [
+        "ip"
+    ],
+    "version": 16779232,
+    "firstSeen": "2018-10-01",
+    "lastSeen": "2020-04-03T10:15:17.281Z",
+    "sources": 1,
+    "scores": [
+        {
+            "date": "2020-04-03T10:15:17.281Z",
+            "score": 0.3397058823529412,
+            "confidence": None,
+            "level": "suspicious",
+            "details": [
+                {
+                    "date": "2020-04-03T10:15:17.281Z",
+                    "engineId": "0092293a2e6b3ada22c681617520e124",
+                    "engineConfidence": None,
+                    "level": "safe",
+                    "score": 0
+                },
+                {
+                    "date": "2020-04-03T10:15:17.281Z",
+                    "engineId": "f06549a927164a3f2e336977a41794c8",
+                    "engineConfidence": None,
+                    "level": "malicious",
+                    "score": 0.9
+                },
+                {
+                    "date": "2020-04-03T10:15:17.281Z",
+                    "engineId": "558a885ad3bb9fe8c84629c39ea64431",
+                    "engineConfidence": None,
+                    "level": "suspicious",
+                    "score": 0.5
+                },
+                {
+                    "date": "2020-04-03T10:15:17.281Z",
+                    "engineId": "a8451f72cbe670c3d971157a2b73be0e",
+                    "engineConfidence": None,
+                    "level": "safe",
+                    "score": 0.175
+                }
+            ]
+        }
+    ]
+}
+
 CYBERPROTECT_500_ERROR_RESPONSE_MOCK = {
     "error": {
         "type": "Server Error",
@@ -38,4 +95,51 @@ EXPECTED_RESPONSE_500_ERROR = {
             'type': 'fatal'
         }
     ]
+}
+
+EXPECTED_RESPONSE_DELIBERATE = {
+    'data': {
+        'verdicts': {
+            'count': 1,
+            'docs': [
+                {
+                    'disposition': 3,
+                    'disposition_name': 'Suspicious',
+                    'observable': {
+                        'type': 'ip',
+                        'value': '1.1.1.1'
+                    },
+                    'type': 'verdict',
+                    'valid_time': {
+                        'end_time': '2020-04-10T10:15:17.281000Z',
+                        'start_time': '2020-04-03T10:15:17.281000Z'
+                    }
+                }
+            ]
+        }
+    }
+}
+
+
+EXPECTED_RESPONSE_OBSERVE = {
+    'data': {
+        'verdicts': {
+            'count': 1,
+            'docs': [
+                {
+                    'disposition': 3,
+                    'disposition_name': 'Suspicious',
+                    'observable': {
+                        'type': 'ip',
+                        'value': '1.1.1.1'
+                    },
+                    'type': 'verdict',
+                    'valid_time': {
+                        'end_time': '2020-04-10T10:15:17.281000Z',
+                        'start_time': '2020-04-03T10:15:17.281000Z'
+                    }
+                }
+            ]
+        }
+    }
 }
