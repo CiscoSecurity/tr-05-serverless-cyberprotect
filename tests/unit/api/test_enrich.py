@@ -89,7 +89,18 @@ def test_enrich_call_success(route, client, valid_json,
     response = client.post(route, json=valid_json)
 
     assert response.status_code == HTTPStatus.OK
-    assert response.get_json() == expected_payload
+
+    data = response.get_json()
+
+    if route == '/observe/observables':
+        judgements = data['data']['judgements']
+        assert judgements['count'] == 4
+        assert judgements['docs'][0].pop('id')
+        assert judgements['docs'][1].pop('id')
+        assert judgements['docs'][2].pop('id')
+        assert judgements['docs'][3].pop('id')
+
+    assert data == expected_payload
 
 
 def test_enrich_call_404(route, client, valid_json, cyberprotect_api_request):

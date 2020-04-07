@@ -6,6 +6,8 @@ class Config:
 
     CYBERPROTECT_API_URL = \
         'https://threatscore.cyberprotect.fr/api/score/{observable}'
+    CYBERPROTECT_UI_URL = \
+        'https://threatscore.cyberprotect.fr/search?query={observable}'
 
     CYBERPROTECT_HEADERS = {
         'User-Agent': ('Cisco Threat Response Integrations '
@@ -31,6 +33,14 @@ class Config:
     CTIM_SCHEMA_VERSION = '1.0.16'
     CTIM_VERDICT_DEFAULTS = {
         'type': 'verdict',
+    }
+    CTIM_JUDGEMENT_DEFAULTS = {
+        'type': 'judgement',
+        'schema_version': CTIM_SCHEMA_VERSION,
+        'source': CYBERPROTECT_SOURCE_NAME,
+        'confidence': 'Medium',
+        'priority': 85,
+        'severity': 'Medium',
     }
 
     CTIM_VALID_DAYS_PERIOD = 7
