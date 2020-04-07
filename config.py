@@ -21,6 +21,7 @@ class Config:
     CYBERPROTECT_OBSERVABLE_TYPES = {
         'ip': 'IP',
         'ipv6': 'IPV6',
+        'domain': 'Domain'
     }
 
     CYBERPROTECT_SCORE_RELATIONS = {
