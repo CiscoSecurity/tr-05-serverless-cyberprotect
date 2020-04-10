@@ -1,3 +1,5 @@
+import os
+
 from version import VERSION
 
 
@@ -43,6 +45,10 @@ class Config:
         'priority': 85,
         'severity': 'Medium',
     }
+
+    CTIM_DEFAULT_ENTITIES_LIMIT = 100
+    CTIM_MAX_ENTITIES_LIMIT = \
+        int(os.environ.get('CTR_ENTITIES_LIMIT', CTIM_DEFAULT_ENTITIES_LIMIT))
 
     CTIM_VALID_DAYS_PERIOD = 7
 

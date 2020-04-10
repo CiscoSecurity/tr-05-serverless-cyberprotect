@@ -140,7 +140,13 @@ def deliberate_observables():
 
     verdicts = []
     for output in cyberprotect_outputs:
-        for score in output['scores']:
+
+        scores = output['scores']
+        if len(scores) >= current_app.config['CTIM_MAX_ENTITIES_LIMIT']:
+            scores = \
+                scores[:current_app.config['CTIM_MAX_ENTITIES_LIMIT']]
+
+        for score in scores:
             # need to check because [[]] return in output if don't have scores
             if score:
                 verdicts.append(extract_verdicts(output, score))
@@ -167,12 +173,25 @@ def observe_observables():
     verdicts = []
     judgements = []
     for output in cyberprotect_outputs:
-        for score in output['scores']:
+
+        scores = output['scores']
+        if len(scores) >= current_app.config['CTIM_MAX_ENTITIES_LIMIT']:
+            scores = \
+                scores[:current_app.config['CTIM_MAX_ENTITIES_LIMIT']]
+
+        for score in scores:
             # need to check because [[]] return in output  if don't have scores
             if score:
                 verdicts.append(extract_verdicts(output, score))
-                for details in score['details']:
-                    judgements.append(extract_judgement(output, details))
+
+                details = score['details']
+                if len(details) >= \
+                        current_app.config['CTIM_MAX_ENTITIES_LIMIT']:
+                    details = \
+                        details[:current_app.config['CTIM_MAX_ENTITIES_LIMIT']]
+
+                for detail in details:
+                    judgements.append(extract_judgement(output, detail))
 
     relay_output = {}
 

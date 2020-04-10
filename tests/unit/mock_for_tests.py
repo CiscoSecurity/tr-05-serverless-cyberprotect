@@ -228,3 +228,52 @@ EXPECTED_RESPONSE_OBSERVE = {
         }
     }
 }
+
+EXPECTED_RESPONSE_OBSERVE_WITH_LIMIT_1 = {
+    'data': {
+        'judgements': {
+            'count': 1,
+            'docs': [
+                {
+                    'confidence': 'Medium',
+                    'disposition': 5,
+                    'disposition_name': 'Unknown',
+                    'observable': {
+                        'type': 'ip',
+                        'value': '1.1.1.1'
+                    },
+                    'priority': 85,
+                    'schema_version': '1.0.16',
+                    'severity': 'Medium',
+                    'source': 'Threatscore Cyberprotect',
+                    'source_uri':
+                        'https://threatscore.cyberprotect.fr/'
+                        'search?query=1.1.1.1',
+                    'type': 'judgement',
+                    'valid_time': {
+                        'end_time': '2020-04-10T10:15:17.281000Z',
+                        'start_time': '2020-04-03T10:15:17.281000Z'
+                    }
+                }
+            ]
+        },
+        'verdicts': {
+            'count': 1,
+            'docs': [
+                {
+                    'disposition': 3,
+                    'disposition_name': 'Suspicious',
+                    'observable': {
+                        'type': 'ip',
+                        'value': '1.1.1.1'
+                    },
+                    'type': 'verdict',
+                    'valid_time': {
+                        'end_time': '2020-04-10T10:15:17.281000Z',
+                        'start_time': '2020-04-03T10:15:17.281000Z'
+                    }
+                }
+            ]
+        }
+    }
+}

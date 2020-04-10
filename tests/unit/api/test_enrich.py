@@ -10,7 +10,8 @@ from tests.unit.mock_for_tests import (
     EXPECTED_RESPONSE_500_ERROR,
     EXPECTED_RESPONSE_404_ERROR,
     EXPECTED_RESPONSE_DELIBERATE,
-    EXPECTED_RESPONSE_OBSERVE
+    EXPECTED_RESPONSE_OBSERVE,
+    EXPECTED_RESPONSE_OBSERVE_WITH_LIMIT_1
 )
 
 
@@ -101,6 +102,29 @@ def test_enrich_call_success(route, client, valid_json,
         assert judgements['docs'][3].pop('id')
 
     assert data == expected_payload
+
+
+def test_enrich_call_success_limit_1(route, client, valid_json,
+                                     cyberprotect_api_request):
+
+    if route == '/observe/observables':
+        cyberprotect_api_request.return_value = \
+            cyberprotect_api_response(ok=True)
+
+        client.application.config['CTIM_MAX_ENTITIES_LIMIT'] = 1
+
+        response = client.post(route, json=valid_json)
+
+        assert response.status_code == HTTPStatus.OK
+
+        data = response.get_json()
+
+        if route == '/observe/observables':
+            judgements = data['data']['judgements']
+            assert judgements['count'] == 1
+            assert judgements['docs'][0].pop('id')
+
+        assert data == EXPECTED_RESPONSE_OBSERVE_WITH_LIMIT_1
 
 
 def test_enrich_call_404(route, client, valid_json, cyberprotect_api_request):
