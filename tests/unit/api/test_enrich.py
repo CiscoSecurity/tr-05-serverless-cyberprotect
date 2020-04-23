@@ -111,7 +111,7 @@ def test_enrich_call_success_limit_1(route, client, valid_json,
         cyberprotect_api_request.return_value = \
             cyberprotect_api_response(ok=True)
 
-        client.application.config['CTIM_MAX_ENTITIES_LIMIT'] = 1
+        client.application.config['CTR_ENTITIES_LIMIT'] = 1
 
         response = client.post(route, json=valid_json)
 

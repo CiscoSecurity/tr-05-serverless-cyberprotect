@@ -142,9 +142,8 @@ def deliberate_observables():
     for output in cyberprotect_outputs:
 
         scores = output['scores']
-        if len(scores) >= current_app.config['CTIM_MAX_ENTITIES_LIMIT']:
-            scores = \
-                scores[:current_app.config['CTIM_MAX_ENTITIES_LIMIT']]
+        if len(scores) >= current_app.config['CTR_ENTITIES_LIMIT']:
+            scores = scores[:current_app.config['CTR_ENTITIES_LIMIT']]
 
         for score in scores:
             # need to check because [[]] return in output if don't have scores
@@ -175,9 +174,8 @@ def observe_observables():
     for output in cyberprotect_outputs:
 
         scores = output['scores']
-        if len(scores) >= current_app.config['CTIM_MAX_ENTITIES_LIMIT']:
-            scores = \
-                scores[:current_app.config['CTIM_MAX_ENTITIES_LIMIT']]
+        if len(scores) >= current_app.config['CTR_ENTITIES_LIMIT']:
+            scores = scores[:current_app.config['CTR_ENTITIES_LIMIT']]
 
         for score in scores:
             # need to check because [[]] return in output  if don't have scores
@@ -186,9 +184,9 @@ def observe_observables():
 
                 details = score['details']
                 if len(details) >= \
-                        current_app.config['CTIM_MAX_ENTITIES_LIMIT']:
+                        current_app.config['CTR_ENTITIES_LIMIT']:
                     details = \
-                        details[:current_app.config['CTIM_MAX_ENTITIES_LIMIT']]
+                        details[:current_app.config['CTR_ENTITIES_LIMIT']]
 
                 for detail in details:
                     judgements.append(extract_judgement(output, detail))
