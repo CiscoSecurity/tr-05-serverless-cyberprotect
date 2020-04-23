@@ -58,3 +58,5 @@ class Config:
         'Malicious': 2,
         'Unknown': 5
     }
+
+    CTIM_REASON_DEFAULT = 'Scored by {}'
