@@ -135,6 +135,7 @@ EXPECTED_RESPONSE_OBSERVE = {
                         'value': '1.1.1.1'
                     },
                     'priority': 85,
+                    'reason': 'Scored by 0092293a2e6b3ada22c681617520e124',
                     'schema_version': '1.0.16',
                     'severity': 'Medium',
                     'source': 'Threatscore Cyberprotect',
@@ -155,6 +156,7 @@ EXPECTED_RESPONSE_OBSERVE = {
                         'value': '1.1.1.1'
                     },
                     'priority': 85,
+                    'reason': 'Scored by f06549a927164a3f2e336977a41794c8',
                     'schema_version': '1.0.16',
                     'severity': 'Medium',
                     'source': 'Threatscore Cyberprotect',
@@ -175,6 +177,7 @@ EXPECTED_RESPONSE_OBSERVE = {
                         'value': '1.1.1.1'
                     },
                     'priority': 85,
+                    'reason': 'Scored by 558a885ad3bb9fe8c84629c39ea64431',
                     'schema_version': '1.0.16',
                     'severity': 'Medium',
                     'source': 'Threatscore Cyberprotect',
@@ -195,6 +198,7 @@ EXPECTED_RESPONSE_OBSERVE = {
                         'value': '1.1.1.1'
                     },
                     'priority': 85,
+                    'reason': 'Scored by a8451f72cbe670c3d971157a2b73be0e',
                     'schema_version': '1.0.16',
                     'severity': 'Medium',
                     'source': 'Threatscore Cyberprotect',
@@ -243,6 +247,7 @@ EXPECTED_RESPONSE_OBSERVE_WITH_LIMIT_1 = {
                         'value': '1.1.1.1'
                     },
                     'priority': 85,
+                    'reason': 'Scored by 0092293a2e6b3ada22c681617520e124',
                     'schema_version': '1.0.16',
                     'severity': 'Medium',
                     'source': 'Threatscore Cyberprotect',
