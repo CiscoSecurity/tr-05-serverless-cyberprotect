@@ -128,8 +128,8 @@ EXPECTED_RESPONSE_OBSERVE = {
             'docs': [
                 {
                     'confidence': 'Medium',
-                    'disposition': 5,
-                    'disposition_name': 'Unknown',
+                    'disposition': 1,
+                    'disposition_name': 'Clean',
                     'observable': {
                         'type': 'ip',
                         'value': '1.1.1.1'
@@ -236,8 +236,8 @@ EXPECTED_RESPONSE_OBSERVE_WITH_LIMIT_1 = {
             'docs': [
                 {
                     'confidence': 'Medium',
-                    'disposition': 5,
-                    'disposition_name': 'Unknown',
+                    'disposition': 1,
+                    'disposition_name': 'Clean',
                     'observable': {
                         'type': 'ip',
                         'value': '1.1.1.1'

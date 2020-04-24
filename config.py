@@ -27,8 +27,7 @@ class Config:
     }
 
     CYBERPROTECT_SCORE_RELATIONS = {
-        'Unknown': (0, 0),
-        'Clean': (0.001, 0.25),
+        'Clean': (0, 0.25),
         'Suspicious': (0.251, 0.5),
         'Malicious': (0.501, 1)
     }
