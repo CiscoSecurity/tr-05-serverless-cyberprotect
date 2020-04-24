@@ -118,7 +118,8 @@ def extract_judgement(output, details):
         'source_uri': current_app.config['CYBERPROTECT_UI_URL'].format(
             observable=output['observable']['value']),
         'reason':
-            current_app.config['CTIM_REASON_DEFAULT'].format(details['engineId']),
+            current_app.config['CTIM_REASON_DEFAULT'].format(
+                details['engineId']),
         **current_app.config['CTIM_JUDGEMENT_DEFAULTS']
     }
 
