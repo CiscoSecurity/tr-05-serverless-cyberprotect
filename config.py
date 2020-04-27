@@ -64,4 +64,4 @@ class Config:
         'Unknown': 5
     }
 
-    CTIM_REASON_DEFAULT = 'Scored by {}'
+    CTIM_REASON_DEFAULT = 'Engine: {}'
