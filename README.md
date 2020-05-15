@@ -51,6 +51,13 @@ As a TR Relay Module:
 variables from a `.env` file (i.e.`TR_API_CLIENT_ID`, `TR_API_CLIENT_PASSWORD`,
 `URL`) and pass them to the corresponding command.
 
+## Environment Variables
+
+- `CTR_ENTITIES_LIMIT` - the maximum number of entities in a response.
+ Applicable to: `Judgement`.
+ Must be a positive integer.
+ Default value - `100`, used if the variable is not set or set variable is incorrect.
+
 ## Usage
 
 ```bash
