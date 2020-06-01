@@ -2,7 +2,7 @@ import json
 from typing import Optional
 from http import HTTPStatus
 
-from flask import request, current_app, jsonify
+from flask import request, current_app, jsonify, g
 
 from api.errors import (
     CyberprotectNotFoundError,
@@ -39,12 +39,30 @@ def get_json(schema):
     return data
 
 
+def format_docs(docs):
+    return {'count': len(docs), 'docs': docs}
+
+
 def jsonify_data(data):
     return jsonify({'data': data})
 
 
 def jsonify_error(error):
-    return jsonify({'errors': [error]})
+    data = {
+        'errors': [error],
+        'data': {}
+    }
+
+    if g.get('verdicts'):
+        data['data'].update({'verdicts': format_docs(g.verdicts)})
+
+    if g.get('judgements'):
+        data['data'].update({'judgements': format_docs(g.judgements)})
+
+    if not data['data']:
+        data.pop('data')
+
+    return jsonify(data)
 
 
 def get_response_data(response):

@@ -2,10 +2,16 @@ from datetime import datetime, timedelta
 from uuid import uuid4
 
 import requests
-from flask import Blueprint, current_app
+from flask import Blueprint, current_app, g
 
 from api.schemas import ObservableSchema
-from api.utils import get_json, jsonify_data, url_for, get_response_data
+from api.utils import (
+    get_json,
+    jsonify_data,
+    url_for,
+    get_response_data,
+    format_docs
+)
 
 enrich_api = Blueprint('enrich', __name__)
 
@@ -34,18 +40,16 @@ def group_observables(relay_input):
     return result
 
 
-def get_cyberprotect_outputs(observables):
+def get_cyberprotect_outputs(observable):
     # Return list of responses from Cyberprotect for all observables
 
-    outputs = []
-    for observable in observables:
-        cyberprotect_output = validate_cyberprotect_output(
-            observable['value'])
+    cyberprotect_output = validate_cyberprotect_output(
+        observable['value'])
 
+    if cyberprotect_output:
         cyberprotect_output['observable'] = observable
-        outputs.append(cyberprotect_output)
 
-    return outputs
+    return cyberprotect_output
 
 
 def get_disposition(score):
@@ -126,10 +130,6 @@ def extract_judgement(output, details):
     return doc
 
 
-def format_docs(docs):
-    return {'count': len(docs), 'docs': docs}
-
-
 @enrich_api.route('/deliberate/observables', methods=['POST'])
 def deliberate_observables():
     relay_input = get_json(ObservableSchema(many=True))
@@ -139,24 +139,26 @@ def deliberate_observables():
     if not observables:
         return jsonify_data({})
 
-    cyberprotect_outputs = get_cyberprotect_outputs(observables)
+    g.verdicts = []
 
-    verdicts = []
-    for output in cyberprotect_outputs:
+    for observable in observables:
 
-        scores = output['scores']
-        if len(scores) >= current_app.config['CTR_ENTITIES_LIMIT']:
-            scores = scores[:current_app.config['CTR_ENTITIES_LIMIT']]
+        output = get_cyberprotect_outputs(observable)
 
-        for score in scores:
-            # need to check because [[]] return in output if don't have scores
-            if score:
-                verdicts.append(extract_verdicts(output, score))
+        if output:
+            scores = output['scores']
+            if len(scores) >= current_app.config['CTR_ENTITIES_LIMIT']:
+                scores = scores[:current_app.config['CTR_ENTITIES_LIMIT']]
+
+            for score in scores:
+                # need to check because [[]] can be returned in output
+                if score:
+                    g.verdicts.append(extract_verdicts(output, score))
 
     relay_output = {}
 
-    if verdicts:
-        relay_output['verdicts'] = format_docs(verdicts)
+    if g.verdicts:
+        relay_output['verdicts'] = format_docs(g.verdicts)
 
     return jsonify_data(relay_output)
 
@@ -170,36 +172,39 @@ def observe_observables():
     if not observables:
         return jsonify_data({})
 
-    cyberprotect_outputs = get_cyberprotect_outputs(observables)
+    g.verdicts = []
+    g.judgements = []
 
-    verdicts = []
-    judgements = []
-    for output in cyberprotect_outputs:
+    for observable in observables:
 
-        scores = output['scores']
-        if len(scores) >= current_app.config['CTR_ENTITIES_LIMIT']:
-            scores = scores[:current_app.config['CTR_ENTITIES_LIMIT']]
+        output = get_cyberprotect_outputs(observable)
 
-        for score in scores:
-            # need to check because [[]] return in output  if don't have scores
-            if score:
-                verdicts.append(extract_verdicts(output, score))
+        if output:
 
-                details = score['details']
-                if len(details) >= \
-                        current_app.config['CTR_ENTITIES_LIMIT']:
-                    details = \
-                        details[:current_app.config['CTR_ENTITIES_LIMIT']]
+            scores = output['scores']
+            if len(scores) >= current_app.config['CTR_ENTITIES_LIMIT']:
+                scores = scores[:current_app.config['CTR_ENTITIES_LIMIT']]
 
-                for detail in details:
-                    judgements.append(extract_judgement(output, detail))
+            for score in scores:
+                # need to check because [[]] can be returned in output
+                if score:
+                    g.verdicts.append(extract_verdicts(output, score))
+
+                    details = score['details']
+                    if len(details) >= \
+                            current_app.config['CTR_ENTITIES_LIMIT']:
+                        details = \
+                            details[:current_app.config['CTR_ENTITIES_LIMIT']]
+
+                    for detail in details:
+                        g.judgements.append(extract_judgement(output, detail))
 
     relay_output = {}
 
-    if verdicts:
-        relay_output['verdicts'] = format_docs(verdicts)
-    if judgements:
-        relay_output['judgements'] = format_docs(judgements)
+    if g.verdicts:
+        relay_output['verdicts'] = format_docs(g.verdicts)
+    if g.judgements:
+        relay_output['judgements'] = format_docs(g.judgements)
 
     return jsonify_data(relay_output)
 

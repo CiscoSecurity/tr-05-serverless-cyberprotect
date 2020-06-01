@@ -68,6 +68,14 @@ def valid_json():
 
 
 @fixture(scope='module')
+def valid_json_multiple():
+    return [
+        {'type': 'ip', 'value': '1.1.1.1'},
+        {'type': 'ip', 'value': '0.0.0.0'},
+    ]
+
+
+@fixture(scope='module')
 def expected_payload(route, client):
 
     payload = None
@@ -102,6 +110,35 @@ def test_enrich_call_success(route, client, valid_json,
         assert judgements['docs'][3].pop('id')
 
     assert data == expected_payload
+
+
+def test_enrich_error_with_data(route, client, valid_json_multiple,
+                                cyberprotect_api_request, expected_payload):
+    cyberprotect_api_request.side_effect = (
+        cyberprotect_api_response(ok=True),
+        cyberprotect_api_response(
+            ok=False, status_error=HTTPStatus.INTERNAL_SERVER_ERROR)
+    )
+
+    response = client.post(route, json=valid_json_multiple)
+
+    assert response.status_code == HTTPStatus.OK
+
+    data = response.get_json()
+
+    if route == '/observe/observables':
+        judgements = data['data']['judgements']
+        assert judgements['count'] == 4
+        assert judgements['docs'][0].pop('id')
+        assert judgements['docs'][1].pop('id')
+        assert judgements['docs'][2].pop('id')
+        assert judgements['docs'][3].pop('id')
+
+    expected_response = {}
+    expected_response.update(expected_payload)
+    expected_response.update(EXPECTED_RESPONSE_500_ERROR)
+
+    assert data == expected_response
 
 
 def test_enrich_call_success_limit_1(route, client, valid_json,
