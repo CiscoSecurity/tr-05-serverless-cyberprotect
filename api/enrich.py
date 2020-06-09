@@ -53,17 +53,13 @@ def get_cyberprotect_outputs(observable):
 
 
 def get_disposition(score):
-
-    disposition = None
-    disposition_name = None
-
-    for d_name, borders in \
-            current_app.config['CYBERPROTECT_SCORE_RELATIONS'].items():
-        if borders[0] <= score <= borders[1]:
-            disposition = current_app.config['CTIM_DISPOSITIONS'][d_name]
-            disposition_name = d_name
-
-    return disposition, disposition_name
+    if score < 0:
+        return 1, 'Clean'
+    else:
+        for d_name, borders in \
+                current_app.config['CYBERPROTECT_SCORE_RELATIONS'].items():
+            if borders[0] <= score <= borders[1]:
+                return current_app.config['CTIM_DISPOSITIONS'][d_name], d_name
 
 
 def extract_verdicts(output, score):
