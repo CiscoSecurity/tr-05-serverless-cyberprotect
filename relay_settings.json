@@ -1,11 +1,9 @@
 {
-  "tags": [
-    "default"
-  ],
   "name": "Cyberprotect",
-  "record": "relay-module.module/RelayModule+Custom+CS",
-  "config": {
-    "url": "${URL}",
+  "module_type_id": "a14ae422-01b6-5013-9876-695ff1b0ebe0",
+  "visibility": "org",
+  "settings": {
+    "url": "https://unayyja4q2.execute-api.eu-central-1.amazonaws.com/dev",
     "supported-apis": [
       "health",
       "observe/observables",
