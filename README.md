@@ -1,6 +1,6 @@
 [![Travis CI Build Status](https://travis-ci.com/CiscoSecurity/tr-05-serverless-cyberprotect.svg?branch=develop)](https://travis-ci.com/CiscoSecurity/tr-05-serverless-cyberprotect)
 
-# Threatscore | Cyberprotect Relay API
+# Threatscore | Cyberprotect Relay
 
 Concrete Relay implementation using
 [Threatscore | Cyberprotect](https://threatscore.cyberprotect.fr/)
