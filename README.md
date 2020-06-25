@@ -204,7 +204,7 @@ just make sure to send requests to your Lambda's `URL`.
 
 ## CTIM Mapping Specifics
 
-Each response from the AbuseIPDB API for the supported observables generates
+Each response from the Threatscore Cyberprotect API for the supported observables generates
 the following CTIM entities:
 
 - `Verdict` is based on `.scores[]`
