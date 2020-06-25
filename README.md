@@ -130,9 +130,9 @@ old `URL` forever.
 
 Now, the only things left to do is to follow one of these URLs to navigate 
 to Threat Response in your region and create the Cyberprotect module using your Lambda's URL:
-  - US: https://visibility.amp.cisco.com/settings/modules/available/a89161ba-8d70-4ea9-a190-1453a763d84f/new
-  - EU: https://visibility.eu.amp.cisco.com/settings/modules/available/0010614a-50e6-4f1a-a9af-877f6eaf2984/new
-  - APJC: https://visibility.apjc.amp.cisco.com/settings/modules/available/a2af1c92-5702-448b-ab50-c9130464414f/new
+- US: https://visibility.amp.cisco.com/settings/modules/available/a89161ba-8d70-4ea9-a190-1453a763d84f/new
+- EU: https://visibility.eu.amp.cisco.com/settings/modules/available/0010614a-50e6-4f1a-a9af-877f6eaf2984/new
+- APJC: https://visibility.apjc.amp.cisco.com/settings/modules/available/a2af1c92-5702-448b-ab50-c9130464414f/new
 
 That is it! Your Serverless Relay is ready to use! Congratulations!
 
