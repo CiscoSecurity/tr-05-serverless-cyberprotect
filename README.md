@@ -166,15 +166,11 @@ just make sure to send requests to your Lambda's `URL`.
 ### Implemented Relay Endpoints
 
 - `POST /health`
-  - Verifies the Authorization Bearer JWT and decodes it to restore the
-  original credentials.
   - Authenticates to the underlying external service to check that the provided
   credentials are valid and the service is available at the moment.
 
 - `POST /deliberate/observables`
   - Accepts a list of observables and filters out unsupported ones.
-  - Verifies the Authorization Bearer JWT and decodes it to restore the
-  original credentials.
   - Makes a series of requests to the underlying external service to query for
   some cyber threat intelligence data on each supported observable.
   - Maps the fetched data into appropriate CTIM entities.
@@ -183,8 +179,6 @@ just make sure to send requests to your Lambda's `URL`.
 
 - `POST /observe/observables`
   - Accepts a list of observables and filters out unsupported ones.
-  - Verifies the Authorization Bearer JWT and decodes it to restore the
-  original credentials.
   - Makes a series of requests to the underlying external service to query for
   some cyber threat intelligence data on each supported observable.
   - Maps the fetched data into appropriate CTIM entities.
