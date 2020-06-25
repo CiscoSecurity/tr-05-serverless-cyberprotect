@@ -10,4 +10,4 @@ install:
 
 script:
 - flake8 .
-- pytest -v tests/unit/
+- coverage run --source api/ -m pytest --verbose tests/unit/ && coverage report
