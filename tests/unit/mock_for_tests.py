@@ -136,7 +136,7 @@ EXPECTED_RESPONSE_OBSERVE = {
                     },
                     'priority': 85,
                     'reason': 'Engine: 0092293a2e6b3ada22c681617520e124',
-                    'schema_version': '1.0.16',
+                    'schema_version': '1.0.17',
                     'severity': 'Medium',
                     'source': 'Threatscore Cyberprotect',
                     'source_uri': 'https://threatscore.cyberprotect.fr/'
@@ -157,7 +157,7 @@ EXPECTED_RESPONSE_OBSERVE = {
                     },
                     'priority': 85,
                     'reason': 'Engine: f06549a927164a3f2e336977a41794c8',
-                    'schema_version': '1.0.16',
+                    'schema_version': '1.0.17',
                     'severity': 'Medium',
                     'source': 'Threatscore Cyberprotect',
                     'source_uri': 'https://threatscore.cyberprotect.fr/'
@@ -178,7 +178,7 @@ EXPECTED_RESPONSE_OBSERVE = {
                     },
                     'priority': 85,
                     'reason': 'Engine: 558a885ad3bb9fe8c84629c39ea64431',
-                    'schema_version': '1.0.16',
+                    'schema_version': '1.0.17',
                     'severity': 'Medium',
                     'source': 'Threatscore Cyberprotect',
                     'source_uri': 'https://threatscore.cyberprotect.fr/'
@@ -199,7 +199,7 @@ EXPECTED_RESPONSE_OBSERVE = {
                     },
                     'priority': 85,
                     'reason': 'Engine: a8451f72cbe670c3d971157a2b73be0e',
-                    'schema_version': '1.0.16',
+                    'schema_version': '1.0.17',
                     'severity': 'Medium',
                     'source': 'Threatscore Cyberprotect',
                     'source_uri': 'https://threatscore.cyberprotect.fr/'
@@ -248,7 +248,7 @@ EXPECTED_RESPONSE_OBSERVE_WITH_LIMIT_1 = {
                     },
                     'priority': 85,
                     'reason': 'Engine: 0092293a2e6b3ada22c681617520e124',
-                    'schema_version': '1.0.16',
+                    'schema_version': '1.0.17',
                     'severity': 'Medium',
                     'source': 'Threatscore Cyberprotect',
                     'source_uri':
