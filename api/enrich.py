@@ -107,7 +107,7 @@ def extract_judgement(output, details):
         'type': output['observable']['type']
     }
 
-    judgement_id = f'transient:{uuid4()}'
+    judgement_id = f'transient:judgement-{uuid4()}'
 
     doc = {
         'id': judgement_id,
