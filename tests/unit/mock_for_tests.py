@@ -61,6 +61,40 @@ CYBERPROTECT_RESPONSE = {
     ]
 }
 
+BROKEN_CYBERPROTECT_RESPONSE = {
+    "scores": [
+        {
+            "level": "suspicious",
+            "details": [
+                {
+                    "date": "2020-04-03T10:15:17.281Z",
+                    "engineId": "0092293a2e6b3ada22c681617520e124",
+                    "engineConfidence": None,
+                    "level": "safe",
+                },
+                {
+                    "date": "2020-04-03T10:15:17.281Z",
+                    "engineId": "f06549a927164a3f2e336977a41794c8",
+                    "engineConfidence": None,
+                    "level": "malicious",
+                },
+                {
+                    "date": "2020-04-03T10:15:17.281Z",
+                    "engineId": "558a885ad3bb9fe8c84629c39ea64431",
+                    "engineConfidence": None,
+                    "level": "suspicious",
+                },
+                {
+                    "date": "2020-04-03T10:15:17.281Z",
+                    "engineId": "a8451f72cbe670c3d971157a2b73be0e",
+                    "engineConfidence": None,
+                    "level": "safe",
+                }
+            ]
+        }
+    ]
+}
+
 CYBERPROTECT_500_ERROR_RESPONSE_MOCK = {
     "error": {
         "type": "Server Error",
@@ -92,6 +126,17 @@ EXPECTED_RESPONSE_500_ERROR = {
         {
             'code': 'unknown',
             'message': 'Internal Error',
+            'type': 'fatal'
+        }
+    ]
+}
+
+EXPECTED_RESPONSE_KEY_ERROR = {
+    'errors': [
+        {
+            'code': 'key error',
+            'message': 'The data structure of Cyberprotect has changed. The '
+                        'module is broken.',
             'type': 'fatal'
         }
     ]
