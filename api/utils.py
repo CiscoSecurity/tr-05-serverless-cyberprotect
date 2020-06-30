@@ -7,7 +7,8 @@ from flask import request, current_app, jsonify, g
 from api.errors import (
     CyberprotectNotFoundError,
     CyberprotectUnexpectedError,
-    BadRequestError
+    BadRequestError,
+    CyberprotectKeyError
 )
 
 
@@ -76,3 +77,13 @@ def get_response_data(response):
 
         else:
             raise CyberprotectUnexpectedError(response.json())
+
+
+def key_error_handler(func):
+    def wrapper(*args, **kwargs):
+        try:
+            result = func(*args, **kwargs)
+        except KeyError:
+            raise CyberprotectKeyError
+        return result
+    return wrapper
