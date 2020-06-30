@@ -136,7 +136,7 @@ EXPECTED_RESPONSE_KEY_ERROR = {
         {
             'code': 'key error',
             'message': 'The data structure of Cyberprotect has changed. The '
-                        'module is broken.',
+                       'module is broken.',
             'type': 'fatal'
         }
     ]

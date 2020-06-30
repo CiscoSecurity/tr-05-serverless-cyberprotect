@@ -62,6 +62,7 @@ def get_disposition(score):
             if borders[0] <= score <= borders[1]:
                 return current_app.config['CTIM_DISPOSITIONS'][d_name], d_name
 
+
 @key_error_handler
 def extract_verdicts(output, score):
     disposition, disposition_name = get_disposition(score['score'])
@@ -89,6 +90,7 @@ def extract_verdicts(output, score):
     }
 
     return doc
+
 
 @key_error_handler
 def extract_judgement(output, details):
