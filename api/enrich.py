@@ -10,7 +10,8 @@ from api.utils import (
     jsonify_data,
     url_for,
     get_response_data,
-    format_docs
+    format_docs,
+    key_error_handler
 )
 
 enrich_api = Blueprint('enrich', __name__)
@@ -62,6 +63,7 @@ def get_disposition(score):
                 return current_app.config['CTIM_DISPOSITIONS'][d_name], d_name
 
 
+@key_error_handler
 def extract_verdicts(output, score):
     disposition, disposition_name = get_disposition(score['score'])
 
@@ -90,6 +92,7 @@ def extract_verdicts(output, score):
     return doc
 
 
+@key_error_handler
 def extract_judgement(output, details):
     disposition, disposition_name = get_disposition(details['score'])
 

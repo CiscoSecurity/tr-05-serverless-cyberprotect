@@ -11,7 +11,9 @@ from tests.unit.mock_for_tests import (
     EXPECTED_RESPONSE_404_ERROR,
     EXPECTED_RESPONSE_DELIBERATE,
     EXPECTED_RESPONSE_OBSERVE,
-    EXPECTED_RESPONSE_OBSERVE_WITH_LIMIT_1
+    EXPECTED_RESPONSE_OBSERVE_WITH_LIMIT_1,
+    BROKEN_CYBERPROTECT_RESPONSE,
+    EXPECTED_RESPONSE_KEY_ERROR
 )
 
 
@@ -31,21 +33,16 @@ def cyberprotect_api_request():
         yield mock_request
 
 
-def cyberprotect_api_response(*, ok, status_error=None):
+def cyberprotect_api_response(*, ok, payload=None, status_error=None):
     mock_response = mock.MagicMock()
 
     mock_response.ok = ok
 
-    if ok:
+    if ok and not payload:
         payload = CYBERPROTECT_RESPONSE
 
     else:
-        if status_error == HTTPStatus.NOT_FOUND:
-            payload = CYBERPROTECT_404_ERROR_RESPONSE_MOCK
-            mock_response.status_code = HTTPStatus.NOT_FOUND
-        elif status_error == HTTPStatus.INTERNAL_SERVER_ERROR:
-            payload = CYBERPROTECT_500_ERROR_RESPONSE_MOCK
-            mock_response.status_code = HTTPStatus.INTERNAL_SERVER_ERROR
+        mock_response.status_code = status_error
 
     mock_response.json = lambda: payload
 
@@ -117,7 +114,9 @@ def test_enrich_error_with_data(route, client, valid_json_multiple,
     cyberprotect_api_request.side_effect = (
         cyberprotect_api_response(ok=True),
         cyberprotect_api_response(
-            ok=False, status_error=HTTPStatus.INTERNAL_SERVER_ERROR)
+            ok=False,
+            payload=CYBERPROTECT_500_ERROR_RESPONSE_MOCK,
+            status_error=HTTPStatus.INTERNAL_SERVER_ERROR)
     )
 
     response = client.post(route, json=valid_json_multiple)
@@ -164,18 +163,38 @@ def test_enrich_call_success_limit_1(route, client, valid_json,
         assert data == EXPECTED_RESPONSE_OBSERVE_WITH_LIMIT_1
 
 
+def test_enrich_call_with_key_error(route, client, valid_json,
+                                    cyberprotect_api_request,
+                                    expected_payload):
+
+    cyberprotect_api_request.return_value = cyberprotect_api_response(
+        ok=True,
+        payload=BROKEN_CYBERPROTECT_RESPONSE
+    )
+
+    response = client.post(route, json=valid_json)
+
+    assert response.status_code == HTTPStatus.OK
+    assert response.get_json() == EXPECTED_RESPONSE_KEY_ERROR
+
+
 def test_enrich_call_404(route, client, valid_json, cyberprotect_api_request):
-    cyberprotect_api_request.return_value = \
-        cyberprotect_api_response(ok=False, status_error=HTTPStatus.NOT_FOUND)
+    cyberprotect_api_request.return_value = cyberprotect_api_response(
+        ok=False,
+        payload=CYBERPROTECT_404_ERROR_RESPONSE_MOCK,
+        status_error=HTTPStatus.NOT_FOUND
+    )
     response = client.post(route, json=valid_json)
     assert response.status_code == HTTPStatus.OK
     assert response.get_json() == EXPECTED_RESPONSE_404_ERROR
 
 
 def test_enrich_call_500(route, client, valid_json, cyberprotect_api_request):
-    cyberprotect_api_request.return_value = \
-        cyberprotect_api_response(
-            ok=False, status_error=HTTPStatus.INTERNAL_SERVER_ERROR)
+    cyberprotect_api_request.return_value = cyberprotect_api_response(
+        ok=False,
+        payload=CYBERPROTECT_500_ERROR_RESPONSE_MOCK,
+        status_error=HTTPStatus.INTERNAL_SERVER_ERROR
+    )
     response = client.post(route, json=valid_json)
     assert response.status_code == HTTPStatus.OK
     assert response.get_json() == EXPECTED_RESPONSE_500_ERROR

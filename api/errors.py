@@ -3,6 +3,7 @@ INVALID_ARGUMENT = 'invalid argument'
 UNKNOWN = 'unknown'
 NOT_FOUND = 'not found'
 INTERNAL = 'internal error'
+KEY_ERROR = 'key error'
 
 
 class TRError(Exception):
@@ -36,6 +37,16 @@ class CyberprotectUnexpectedError(TRError):
             code=UNKNOWN,
             message=error_payload.get('message', None) or error_payload.get(
                 'details', None)
+        )
+
+
+class CyberprotectKeyError(TRError):
+    def __init__(self):
+
+        super().__init__(
+            code=KEY_ERROR,
+            message='The data structure of Cyberprotect has changed.'
+                    ' The module is broken.'
         )
 
 
