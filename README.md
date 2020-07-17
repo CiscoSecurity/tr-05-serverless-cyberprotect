@@ -128,7 +128,7 @@ old `URL` forever.
 
 ### Threat Response Module
 
-Now, the only things left to do is to follow one of these URLs to navigate 
+Now, the only thing left to do is to follow one of these URLs to navigate 
 to Threat Response in your region and create the Cyberprotect module using your Lambda's URL:
 - US: https://visibility.amp.cisco.com/settings/modules/available/a89161ba-8d70-4ea9-a190-1453a763d84f/new
 - EU: https://visibility.eu.amp.cisco.com/settings/modules/available/0010614a-50e6-4f1a-a9af-877f6eaf2984/new
