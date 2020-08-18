@@ -2,6 +2,7 @@ from http import HTTPStatus
 
 from pytest import fixture
 from unittest import mock
+from requests.exceptions import SSLError
 
 from tests.unit.mock_for_tests import (
     CYBERPROTECT_RESPONSE,
@@ -13,7 +14,8 @@ from tests.unit.mock_for_tests import (
     EXPECTED_RESPONSE_OBSERVE,
     EXPECTED_RESPONSE_OBSERVE_WITH_LIMIT_1,
     BROKEN_CYBERPROTECT_RESPONSE,
-    EXPECTED_RESPONSE_KEY_ERROR
+    EXPECTED_RESPONSE_KEY_ERROR,
+    EXPECTED_RESPONSE_SSL_ERROR
 )
 
 
@@ -198,3 +200,18 @@ def test_enrich_call_500(route, client, valid_json, cyberprotect_api_request):
     response = client.post(route, json=valid_json)
     assert response.status_code == HTTPStatus.OK
     assert response.get_json() == EXPECTED_RESPONSE_500_ERROR
+
+
+def test_enrich_call_ssl_error(route, client, valid_json,
+                               cyberprotect_api_request):
+    mock_exception = mock.MagicMock()
+    mock_exception.reason.args.__getitem__().verify_message \
+        = 'self signed certificate'
+    cyberprotect_api_request.side_effect = SSLError(mock_exception)
+
+    response = client.post(route, json=valid_json)
+
+    assert response.status_code == HTTPStatus.OK
+
+    data = response.get_json()
+    assert data == EXPECTED_RESPONSE_SSL_ERROR
