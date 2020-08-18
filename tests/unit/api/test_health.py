@@ -72,7 +72,7 @@ def test_health_call_500(route, client, cyberprotect_api_request):
     assert response.get_json() == EXPECTED_RESPONSE_500_ERROR
 
 
-def test_enrich_call_ssl_error(route, client, cyberprotect_api_request):
+def test_health_call_ssl_error(route, client, cyberprotect_api_request):
     mock_exception = mock.MagicMock()
     mock_exception.reason.args.__getitem__().verify_message \
         = 'self signed certificate'
