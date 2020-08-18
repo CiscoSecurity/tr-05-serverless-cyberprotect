@@ -2,13 +2,15 @@ from http import HTTPStatus
 
 from pytest import fixture
 from unittest import mock
+from requests.exceptions import SSLError
 
 from tests.unit.mock_for_tests import (
     EXPECTED_RESPONSE_404_ERROR,
     EXPECTED_RESPONSE_500_ERROR,
     CYBERPROTECT_HEALTH_RESPONSE_MOCK,
     CYBERPROTECT_500_ERROR_RESPONSE_MOCK,
-    CYBERPROTECT_404_ERROR_RESPONSE_MOCK
+    CYBERPROTECT_404_ERROR_RESPONSE_MOCK,
+    EXPECTED_RESPONSE_SSL_ERROR
 )
 
 
@@ -68,3 +70,17 @@ def test_health_call_500(route, client, cyberprotect_api_request):
     response = client.post(route)
     assert response.status_code == HTTPStatus.OK
     assert response.get_json() == EXPECTED_RESPONSE_500_ERROR
+
+
+def test_health_call_ssl_error(route, client, cyberprotect_api_request):
+    mock_exception = mock.MagicMock()
+    mock_exception.reason.args.__getitem__().verify_message \
+        = 'self signed certificate'
+    cyberprotect_api_request.side_effect = SSLError(mock_exception)
+
+    response = client.post(route)
+
+    assert response.status_code == HTTPStatus.OK
+
+    data = response.get_json()
+    assert data == EXPECTED_RESPONSE_SSL_ERROR

@@ -11,12 +11,14 @@ from api.utils import (
     url_for,
     get_response_data,
     format_docs,
-    key_error_handler
+    key_error_handler,
+    catch_ssl_errors
 )
 
 enrich_api = Blueprint('enrich', __name__)
 
 
+@catch_ssl_errors
 def validate_cyberprotect_output(cyberprotect_input):
     url = url_for(cyberprotect_input)
     return get_response_data(

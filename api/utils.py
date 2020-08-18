@@ -3,12 +3,14 @@ from typing import Optional
 from http import HTTPStatus
 
 from flask import request, current_app, jsonify, g
+from requests.exceptions import SSLError
 
 from api.errors import (
     CyberprotectNotFoundError,
     CyberprotectUnexpectedError,
     BadRequestError,
-    CyberprotectKeyError
+    CyberprotectKeyError,
+    CyberprotectSSLError
 )
 
 
@@ -86,4 +88,13 @@ def key_error_handler(func):
         except KeyError:
             raise CyberprotectKeyError
         return result
+    return wrapper
+
+
+def catch_ssl_errors(func):
+    def wrapper(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except SSLError as error:
+            raise CyberprotectSSLError(error)
     return wrapper

@@ -327,3 +327,15 @@ EXPECTED_RESPONSE_OBSERVE_WITH_LIMIT_1 = {
         }
     }
 }
+
+
+EXPECTED_RESPONSE_SSL_ERROR = {
+    'errors': [
+        {
+            'code': 'unknown',
+            'message': 'Unable to verify SSL certificate: self signed '
+                       'certificate',
+            'type': 'fatal'
+        }
+    ]
+}
