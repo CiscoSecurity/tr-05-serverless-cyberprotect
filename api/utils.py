@@ -94,9 +94,7 @@ def key_error_handler(func):
 def catch_ssl_errors(func):
     def wrapper(*args, **kwargs):
         try:
-            result = func(*args, **kwargs)
+            return func(*args, **kwargs)
         except SSLError as error:
             raise CyberprotectSSLError(error)
-
-        return result
     return wrapper
