@@ -29,6 +29,15 @@ class CyberprotectNotFoundError(TRError):
         )
 
 
+class CyberprotectServiceUnavailableError(TRError):
+    def __init__(self):
+
+        super().__init__(
+            code=NOT_FOUND,
+            message='The Cyberprotect is not available now.'
+        )
+
+
 class CyberprotectUnexpectedError(TRError):
     def __init__(self, payload):
         error_payload = payload.get('error', {})
