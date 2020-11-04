@@ -188,7 +188,7 @@ def observe_observables():
 
             for score in scores:
                 # need to check because [[]] can be returned in output
-                if score:
+                if score and score['score'] is not None:
                     g.verdicts.append(extract_verdicts(output, score))
 
                     details = score['details']
@@ -198,7 +198,9 @@ def observe_observables():
                             details[:current_app.config['CTR_ENTITIES_LIMIT']]
 
                     for detail in details:
-                        g.judgements.append(extract_judgement(output, detail))
+                        if detail['score'] is not None:
+                            g.judgements.append(
+                                extract_judgement(output, detail))
 
     relay_output = {}
 

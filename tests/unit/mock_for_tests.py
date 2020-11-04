@@ -65,30 +65,36 @@ BROKEN_CYBERPROTECT_RESPONSE = {
     "scores": [
         {
             "level": "suspicious",
+            "broken_date_key": "2020-04-03T10:15:17.281Z",
+            "score": 0.3397058823529412,
             "details": [
                 {
-                    "date": "2020-04-03T10:15:17.281Z",
+                    "broken_date_key": "2020-04-03T10:15:17.281Z",
                     "engineId": "0092293a2e6b3ada22c681617520e124",
                     "engineConfidence": None,
                     "level": "safe",
+                    "score": 0
                 },
                 {
-                    "date": "2020-04-03T10:15:17.281Z",
+                    "broken_date_key": "2020-04-03T10:15:17.281Z",
                     "engineId": "f06549a927164a3f2e336977a41794c8",
                     "engineConfidence": None,
                     "level": "malicious",
+                    "score": 0.9
                 },
                 {
                     "date": "2020-04-03T10:15:17.281Z",
                     "engineId": "558a885ad3bb9fe8c84629c39ea64431",
                     "engineConfidence": None,
                     "level": "suspicious",
+                    "score": 0.5
                 },
                 {
                     "date": "2020-04-03T10:15:17.281Z",
                     "engineId": "a8451f72cbe670c3d971157a2b73be0e",
                     "engineConfidence": None,
                     "level": "safe",
+                    "score": 0.175
                 }
             ]
         }

@@ -10,7 +10,8 @@ from api.errors import (
     CyberprotectUnexpectedError,
     BadRequestError,
     CyberprotectKeyError,
-    CyberprotectSSLError
+    CyberprotectSSLError,
+    CyberprotectServiceUnavailableError
 )
 
 
@@ -76,6 +77,9 @@ def get_response_data(response):
     else:
         if response.status_code == HTTPStatus.NOT_FOUND:
             raise CyberprotectNotFoundError()
+
+        elif response.status_code > HTTPStatus.INTERNAL_SERVER_ERROR:
+            raise CyberprotectServiceUnavailableError()
 
         else:
             raise CyberprotectUnexpectedError(response.json())

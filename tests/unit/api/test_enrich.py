@@ -166,8 +166,7 @@ def test_enrich_call_success_limit_1(route, client, valid_json,
 
 
 def test_enrich_call_with_key_error(route, client, valid_json,
-                                    cyberprotect_api_request,
-                                    expected_payload):
+                                    cyberprotect_api_request):
 
     cyberprotect_api_request.return_value = cyberprotect_api_response(
         ok=True,
