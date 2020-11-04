@@ -147,13 +147,13 @@ def deliberate_observables():
         output = get_cyberprotect_outputs(observable)
 
         if output:
-            scores = output['scores']
+            scores = output.get('scores', [])
             if len(scores) >= current_app.config['CTR_ENTITIES_LIMIT']:
                 scores = scores[:current_app.config['CTR_ENTITIES_LIMIT']]
 
             for score in scores:
                 # need to check because [[]] can be returned in output
-                if score:
+                if score and score['score'] is not None:
                     g.verdicts.append(extract_verdicts(output, score))
 
     relay_output = {}
@@ -182,7 +182,7 @@ def observe_observables():
 
         if output:
 
-            scores = output['scores']
+            scores = output.get('scores', [])
             if len(scores) >= current_app.config['CTR_ENTITIES_LIMIT']:
                 scores = scores[:current_app.config['CTR_ENTITIES_LIMIT']]
 
