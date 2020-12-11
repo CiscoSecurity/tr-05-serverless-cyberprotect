@@ -12,7 +12,7 @@ class Config:
         'https://threatscore.cyberprotect.fr/search?query={observable}'
 
     CYBERPROTECT_HEADERS = {
-        'User-Agent': ('Cisco Threat Response Integrations '
+        'User-Agent': ('SecureX Threat Response Integrations '
                        '<tr-integrations-support@cisco.com>')
     }
 
