@@ -13,7 +13,7 @@ easily packaged and deployed as an AWS Lambda Function using
 
 ## Rationale
 
-1. We need an application that will translate API requests from Threat Response
+1. We need an application that will translate API requests from SecureX Threat Response
 to the third-party integration, and vice versa. This application is provided
 here in the GitHub repository, and we are going to install it in AWS Lambda
 using Zappa.
@@ -127,10 +127,10 @@ zappa undeploy dev
 command does not change the current `URL`. The `undeploy` command destroys the
 old `URL` forever.
 
-### Threat Response Module
+### SecureX Threat Response Module
 
 Now, the only thing left to do is to follow one of these URLs to navigate 
-to Threat Response in your region and create the Cyberprotect module using your Lambda's URL:
+to SecureX Threat Response in your region and create the Cyberprotect module using your Lambda's URL:
 - US: https://securex.us.security.cisco.com/settings/modules/available/a89161ba-8d70-4ea9-a190-1453a763d84f/new
 - EU: https://securex.eu.security.cisco.com/settings/modules/available/0010614a-50e6-4f1a-a9af-877f6eaf2984/new
 - APJC: https://securex.apjc.security.cisco.com/settings/modules/available/a2af1c92-5702-448b-ab50-c9130464414f/new
