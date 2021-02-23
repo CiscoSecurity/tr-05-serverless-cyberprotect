@@ -26,3 +26,6 @@ echo
 echo "Starting build process ..."
 echo
 docker build -t "$image_name:$version" .
+echo
+echo "Please ensure you update module_type.json with correct url."
+echo
