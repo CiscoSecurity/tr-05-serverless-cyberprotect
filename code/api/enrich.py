@@ -6,6 +6,7 @@ from flask import Blueprint, current_app, g
 
 from api.schemas import ObservableSchema
 from api.utils import (
+    get_jwt,
     get_json,
     jsonify_data,
     url_for,
@@ -133,6 +134,7 @@ def extract_judgement(output, details):
 
 @enrich_api.route('/deliberate/observables', methods=['POST'])
 def deliberate_observables():
+    _ = get_jwt()
     relay_input = get_json(ObservableSchema(many=True))
 
     observables = group_observables(relay_input)
@@ -166,6 +168,7 @@ def deliberate_observables():
 
 @enrich_api.route('/observe/observables', methods=['POST'])
 def observe_observables():
+    _ = get_jwt()
     relay_input = get_json(ObservableSchema(many=True))
 
     observables = group_observables(relay_input)

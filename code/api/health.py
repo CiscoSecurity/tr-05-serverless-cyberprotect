@@ -2,6 +2,7 @@ import requests
 from flask import Blueprint, current_app
 
 from api.utils import (
+    get_jwt,
     jsonify_data,
     url_for,
     get_response_data,
@@ -21,5 +22,6 @@ def check_health_cyberprotect_api():
 
 @health_api.route('/health', methods=['POST'])
 def health():
+    _ = get_jwt()
     check_health_cyberprotect_api()
     return jsonify_data({'status': 'ok'})

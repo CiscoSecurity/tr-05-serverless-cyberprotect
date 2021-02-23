@@ -4,6 +4,7 @@ UNKNOWN = 'unknown'
 NOT_FOUND = 'not found'
 INTERNAL = 'internal error'
 KEY_ERROR = 'key error'
+AUTH_ERROR = 'authorization error'
 
 
 class TRError(Exception):
@@ -76,4 +77,21 @@ class BadRequestError(TRError):
         super().__init__(
             INVALID_ARGUMENT,
             error_message
+        )
+
+
+class AuthorizationError(TRError):
+    def __init__(self, message):
+
+        super().__init__(
+            AUTH_ERROR,
+            f"Authorization failed: {message}"
+        )
+
+
+class WatchdogError(TRError):
+    def __init__(self):
+        super().__init__(
+            code='health check failed',
+            message='Invalid Health Check'
         )
