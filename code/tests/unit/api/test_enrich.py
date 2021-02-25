@@ -1,9 +1,9 @@
-from http import HTTPStatus
-
-from pytest import fixture
 from unittest import mock
+from pytest import fixture
+from http import HTTPStatus
 from requests.exceptions import SSLError
-
+from tests.unit.api.utils import headers
+from tests.unit.conftest import cyberprotect_api_response
 from tests.unit.mock_for_tests import (
     CYBERPROTECT_RESPONSE,
     CYBERPROTECT_500_ERROR_RESPONSE_MOCK,
@@ -15,7 +15,8 @@ from tests.unit.mock_for_tests import (
     EXPECTED_RESPONSE_OBSERVE_WITH_LIMIT_1,
     BROKEN_CYBERPROTECT_RESPONSE,
     EXPECTED_RESPONSE_KEY_ERROR,
-    EXPECTED_RESPONSE_SSL_ERROR
+    EXPECTED_RESPONSE_SSL_ERROR,
+    EXPECTED_RESPONSE_OF_JWKS_ENDPOINT
 )
 
 
@@ -29,28 +30,6 @@ def route(request):
     return request.param
 
 
-@fixture(scope='function')
-def cyberprotect_api_request():
-    with mock.patch('requests.get') as mock_request:
-        yield mock_request
-
-
-def cyberprotect_api_response(*, ok, payload=None, status_error=None):
-    mock_response = mock.MagicMock()
-
-    mock_response.ok = ok
-
-    if ok and not payload:
-        payload = CYBERPROTECT_RESPONSE
-
-    else:
-        mock_response.status_code = status_error
-
-    mock_response.json = lambda: payload
-
-    return mock_response
-
-
 @fixture(scope='module')
 def invalid_json():
     return [{'type': 'unknown', 'value': ''}]
@@ -59,11 +38,6 @@ def invalid_json():
 def test_enrich_call_with_invalid_json_failure(route, client, invalid_json):
     response = client.post(route, json=invalid_json)
     assert response.status_code == HTTPStatus.OK
-
-
-@fixture(scope='module')
-def valid_json():
-    return [{'type': 'ip', 'value': '1.1.1.1'}]
 
 
 @fixture(scope='module')
@@ -91,10 +65,15 @@ def expected_payload(route, client):
 
 
 def test_enrich_call_success(route, client, valid_json,
-                             cyberprotect_api_request, expected_payload):
-    cyberprotect_api_request.return_value = cyberprotect_api_response(ok=True)
+                             cyberprotect_api_request, expected_payload,
+                             valid_jwt):
+    cyberprotect_api_request.side_effect = [
+        cyberprotect_api_response(payload=EXPECTED_RESPONSE_OF_JWKS_ENDPOINT),
+        cyberprotect_api_response(payload=CYBERPROTECT_RESPONSE)
+    ]
 
-    response = client.post(route, json=valid_json)
+    response = client.post(route, headers=headers(valid_jwt()),
+                           json=valid_json)
 
     assert response.status_code == HTTPStatus.OK
 
@@ -112,16 +91,18 @@ def test_enrich_call_success(route, client, valid_json,
 
 
 def test_enrich_error_with_data(route, client, valid_json_multiple,
-                                cyberprotect_api_request, expected_payload):
+                                cyberprotect_api_request, expected_payload,
+                                valid_jwt):
     cyberprotect_api_request.side_effect = (
-        cyberprotect_api_response(ok=True),
+        cyberprotect_api_response(payload=EXPECTED_RESPONSE_OF_JWKS_ENDPOINT),
+        cyberprotect_api_response(payload=CYBERPROTECT_RESPONSE),
         cyberprotect_api_response(
-            ok=False,
             payload=CYBERPROTECT_500_ERROR_RESPONSE_MOCK,
-            status_error=HTTPStatus.INTERNAL_SERVER_ERROR)
+            status_code=HTTPStatus.INTERNAL_SERVER_ERROR)
     )
 
-    response = client.post(route, json=valid_json_multiple)
+    response = client.post(route, headers=headers(valid_jwt()),
+                           json=valid_json_multiple)
 
     assert response.status_code == HTTPStatus.OK
 
@@ -143,15 +124,19 @@ def test_enrich_error_with_data(route, client, valid_json_multiple,
 
 
 def test_enrich_call_success_limit_1(route, client, valid_json,
-                                     cyberprotect_api_request):
+                                     cyberprotect_api_request,
+                                     valid_jwt):
 
     if route == '/observe/observables':
-        cyberprotect_api_request.return_value = \
-            cyberprotect_api_response(ok=True)
+        cyberprotect_api_request.side_effect = [
+            cyberprotect_api_response(
+                payload=EXPECTED_RESPONSE_OF_JWKS_ENDPOINT
+            ),
+            cyberprotect_api_response(payload=CYBERPROTECT_RESPONSE)
+        ]
 
-        client.application.config['CTR_ENTITIES_LIMIT'] = 1
-
-        response = client.post(route, json=valid_json)
+        response = client.post(route, headers=headers(valid_jwt(
+            ctr_entities_limit=1)), json=valid_json)
 
         assert response.status_code == HTTPStatus.OK
 
@@ -166,49 +151,63 @@ def test_enrich_call_success_limit_1(route, client, valid_json,
 
 
 def test_enrich_call_with_key_error(route, client, valid_json,
-                                    cyberprotect_api_request):
+                                    cyberprotect_api_request,
+                                    valid_jwt):
 
-    cyberprotect_api_request.return_value = cyberprotect_api_response(
-        ok=True,
-        payload=BROKEN_CYBERPROTECT_RESPONSE
-    )
+    cyberprotect_api_request.side_effect = [
+        cyberprotect_api_response(payload=EXPECTED_RESPONSE_OF_JWKS_ENDPOINT),
+        cyberprotect_api_response(
+            payload=BROKEN_CYBERPROTECT_RESPONSE)
+    ]
 
-    response = client.post(route, json=valid_json)
+    response = client.post(route, headers=headers(valid_jwt()),
+                           json=valid_json)
 
     assert response.status_code == HTTPStatus.OK
     assert response.get_json() == EXPECTED_RESPONSE_KEY_ERROR
 
 
-def test_enrich_call_404(route, client, valid_json, cyberprotect_api_request):
-    cyberprotect_api_request.return_value = cyberprotect_api_response(
-        ok=False,
-        payload=CYBERPROTECT_404_ERROR_RESPONSE_MOCK,
-        status_error=HTTPStatus.NOT_FOUND
-    )
-    response = client.post(route, json=valid_json)
+def test_enrich_call_404(route, client, valid_json, cyberprotect_api_request,
+                         valid_jwt):
+    cyberprotect_api_request.side_effect = [
+        cyberprotect_api_response(payload=EXPECTED_RESPONSE_OF_JWKS_ENDPOINT),
+        cyberprotect_api_response(
+            payload=CYBERPROTECT_404_ERROR_RESPONSE_MOCK,
+            status_code=HTTPStatus.NOT_FOUND)
+    ]
+    response = client.post(route, headers=headers(valid_jwt()),
+                           json=valid_json)
     assert response.status_code == HTTPStatus.OK
     assert response.get_json() == EXPECTED_RESPONSE_404_ERROR
 
 
-def test_enrich_call_500(route, client, valid_json, cyberprotect_api_request):
-    cyberprotect_api_request.return_value = cyberprotect_api_response(
-        ok=False,
-        payload=CYBERPROTECT_500_ERROR_RESPONSE_MOCK,
-        status_error=HTTPStatus.INTERNAL_SERVER_ERROR
-    )
-    response = client.post(route, json=valid_json)
+def test_enrich_call_500(route, client, valid_json, cyberprotect_api_request,
+                         valid_jwt):
+    cyberprotect_api_request.side_effect = [
+        cyberprotect_api_response(payload=EXPECTED_RESPONSE_OF_JWKS_ENDPOINT),
+        cyberprotect_api_response(
+            payload=CYBERPROTECT_500_ERROR_RESPONSE_MOCK,
+            status_code=HTTPStatus.INTERNAL_SERVER_ERROR)
+    ]
+    response = client.post(route, headers=headers(valid_jwt()),
+                           json=valid_json)
     assert response.status_code == HTTPStatus.OK
     assert response.get_json() == EXPECTED_RESPONSE_500_ERROR
 
 
 def test_enrich_call_ssl_error(route, client, valid_json,
-                               cyberprotect_api_request):
+                               cyberprotect_api_request,
+                               valid_jwt):
     mock_exception = mock.MagicMock()
     mock_exception.reason.args.__getitem__().verify_message \
         = 'self signed certificate'
-    cyberprotect_api_request.side_effect = SSLError(mock_exception)
+    cyberprotect_api_request.side_effect = [
+        cyberprotect_api_response(payload=EXPECTED_RESPONSE_OF_JWKS_ENDPOINT),
+        SSLError(mock_exception)
+    ]
 
-    response = client.post(route, json=valid_json)
+    response = client.post(route, headers=headers(valid_jwt()),
+                           json=valid_json)
 
     assert response.status_code == HTTPStatus.OK
 

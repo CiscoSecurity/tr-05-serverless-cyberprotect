@@ -1,0 +1,56 @@
+{
+  "title": "Threatscore | Cyberprotect",
+  "default_name": "Threatscore | Cyberprotect",
+  "short_description": "Threatscore gives a computed score about a level of threat for any (known) observables.",
+  "description": "Threatscore by Cyberprotect is based on NICKI - New Intelligence for Cyber-threat Knowledge for Inter-connectivity.\n\n\n- Every day, we process a little over a billion events.\n\n\n- We rely on a team of experts who are first and foremost cybersecurity enthusiasts.\n\n\n- Our knowledge of cyber threats is based on the high quality and diversity of brains and information we have in our lab.\n\n\n- Our engine has the ability to inter-connect with a wide range of equipment. This makes it possible to offer everyone the opportunity to optimize their cybersecurity in an efficient and unrestricted way.",
+  "tips": "When configuring this integration, you must first add the Threatscore Cyberprotect Module\n\n1. Complete the **Add New Threatscore Cyberprotect Module** form:\n    - **Module Name** - Leave the default name or enter a name that is meaningful to you.\n    - **Entities Limit** - Enter the limit that restricts the maximum number of CTIM entities of each type returned in a single response per each requested observable. Must be a positive integer. Defaults to 100 (if unset or incorrect).\n\n2. Click **Save** to complete the Threatscore Cyberprotect module configuration",
+  "external_references": [
+    {
+      "label": "How it works",
+      "link": "https://threatscore.cyberprotect.fr/how-it-works"
+    },
+    {
+      "label": "Cyberprotect",
+      "link": "https://www.cyberprotect.one/"
+    },
+    {
+      "label": "Threatscore | Cyberprotect",
+      "link": "https://threatscore.cyberprotect.fr/"
+    }
+  ],
+  "configuration_spec": [
+    {
+      "key": "custom_CTR_ENTITIES_LIMIT",
+      "type": "integer",
+      "label": "Entities Limit",
+      "tooltip": "Restricts the maximum number of `Verdicts` and `Judgements`",
+      "required": false
+    }
+  ],
+  "capabilities": [
+    {
+      "id": "health",
+      "description": "Performs health check against Cyberprotect API."
+    },
+    {
+      "id": "observe",
+      "description": "Query Cyberprotect for IP and Domain and return Judgement and Verdict."
+    },
+        {
+      "id": "deliberate",
+      "description": "Query Cyberprotect for IP and Domain return Verdict."
+    }
+  ],
+  "properties": {
+    "url": "https://ciscohosted.url",
+    "supported-apis": [
+      "health",
+      "observe/observables",
+      "deliberate/observables"
+    ],
+    "auth-type": "configuration-token",
+    "configuration-token-alg": "RS256",
+    "custom_jwks_host": "visibility.amp.cisco.com"
+  },
+  "logo": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAIAAADYYG7QAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAABmJLR0QA/wD/AP+gvaeTAAAAB3RJTUUH4gMBDygAPkXkCwAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAxOC0wMy0wMVQxNTo0MDowMCswMDowMP79TxAAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMTgtMDMtMDFUMTU6NDA6MDArMDA6MDCPoPesAAAI7ElEQVRYR82YCVQUVxaGbzU0IqsIyg6CAlHcHeNxiRKGjDGgGEcDRj3HSdRjTBzUiKMShEAQkQRj0LRJMIJLIAGXERXiGkcHgzqKM4ogIqKoCBpZBOy15tJ1u6u6p+lm8czJd/rA/V911/vrLfe9V4yKVcLvCRH9/93QI0MsC0qlsqm5WalSoZRKpS2trSyW9oDudNmLF9Kr1679eunilZKSyjt30FB+Xp6Pt/fOrKz0HTv6OjgEDh48euTI8a+O8/cbJBJ17Zm7YAgfvLLyTnZubv6xo89bWqgUQKVSFRw6hIYyMrPS0r+iUjVeHh4Rs2fPmhFub29HRaborP0HDx9+vHZdeMSc7NyfhG6Mc6+mJvXLL0PCQiUZGS+kUio1imlDOD4y9+6bPnt24Ynj3RseOLDSJRK8Q/HlyybvYKLLGhobo9fH/PPXC6Q1mInMBvr6jBv76ohhQ30G+PgN9DU3N29qar59p7LiduWVayXFly7V1dfTtzXgr5YtWbLk/ffMOh5Yxgw9fPho0Ucf3q2uJq3G2tp6Ztj0+ZERXp6eDMNQqS7YCkqF4krJtV17dp8rKsJBRhfUzAgNTYzdIBabk9alQ0O1tY8XLF6EQ4c09q5IFB4atjoqysGhDxWZAlPAjZs3E5KTr5eWUpGat6ZOTUlMNDMzIy3AsKGWltb5779XXlFBGqCPvf2mhMTJkybgT6io0ygUyq+//fab73cKU9TCefPXrFpJQoABQ/iztRvicG6TBnB3ddspkXh5epAW0KaC6jZ4LAW5CuzE4GEJLhYg+h/PaOT4yVNrPomRy+VUBLAlJWVqSAgJDQYMnTh9Oio6mgSAi7Pznp073V1dSauRquDMb1BYz95oBjlLcxVrxcHiJIaJDjDDmRlopd+YJ8/8supvaxRKqtHO1jY/b38/J0dOcpjFxcdRqKat7cXSqL+2aDJN7969d0l2+Azw5iSCtRY3wLpy9uf69oZBB8JaMcY2u9UCR+rhXhsMs2V6C8aJr88AKyvrogs0Z6Uy2ZOnT0KCg4V30J9+e7KzH9fVkQBYs3JVgL8fCZw7LEjuwfpyttZUksPRcuYpLP4PW/qcSjgWzI18beIkEgAFPx+vqLhNQo2OIVykMvftJQGA69Gct2eSwO5gIe0u5D7qQnb8TQ6ry9gbAk84VWPXre3VqxcnlSrld5m7uJhDx9Dps780NDRwsYhhVi5frl0a0cRPteyxus6bIdqUEHuLfcoPZZwiru/OeYdVsZifkJNnzjQ2NtE1vUH9wYoVZ8+d4+JhgYHZmVkizYTBqbT4OotTqTswML4PJPnzaRRXwztVVe1PqQaTPuZbLuZbCFecC8XFJADCw6Zr3eAPM2q66wZh4cIz+HczKcTG2nr40KHDh9FH6wbhDd2quC2TybgYc2jI60FcjNRJoegZxd1mf622RYzBGyqvuEWROvc4OfLp4fwz7HGKO4/eSlfcwGL20kGhAEGe5OAN3b9fQxHAIF9fhuEvXdedup1Eby8rU0G5dh+lUsm3ft4a6N06xEu+KRE3wlQuNOTm5vb65CnBk6fg30kTJggfr+YFBT0B71fTRrEiN0f26Vqor2Wf1Mk2fyr/TkIX9GaZ9pn0WntuielM2BmWecMcl/Y7SxdGKv6ei5VwFZpNfsPyUAHWijHfQnh+UGjAmErVmOnY6yZ4DzPNczL9nVHT4zPAODmpo3Z4Q5u+SBsfHMx9EjelUKmafhYU9BAHc+oB82VRon60WjMO/cTRMVzzILwhW1ubVg1V1XeFI3Kg1UtoIpxh/taaWgf4WhZds9i8zSJ5a++iEtErg7lyhDeE5xhttXjaUigVJADG2lPQE9wtwc2SYoRxdBQv/kC89CPG2YWK1PCGBge8om2UZw0N1YKt9Cg7cOxxr/3JSXemdABvyNvbC/epXIzT7UhhIRcjFiKI1NmfdRlbc5jlTLFxeENic/M3goNJAOQfOyaX8702oz/ja0Vxl2FgsWe7Jy03y8uXRkVpP+0LrQbeEIIHFIoAHtXWHj7Kb6uxkeL8GBvDRxcThDhCWH++u7D50yU7/nH+PPe5WVbm4c7v1nUM4Y4swN+fBMC2b3bg8YMEHtQtISWAET5oZ3itL6zBdYhUOxcv/+vsedrkILNnvm1hISahZwgT9IdLlpAAwL1s8uepwvk/xAa+DmT8+M2CMcwZmOcOcYMYscDO8+ctsYkJ2iXB1sZmwbtzuZhDxxDyx6CgMaNGkQA4cPjwofx8EmrwoCMJZJZ7Mx1lS6wdP2P7wPZAZpEHI8zyuD/8JCGh5sED0gCLFv5FO5M4DByD8HA+Z/48mWZjgIf2bWlpkydO5KQWBQuXG+FiA1S2sU9k7Ys5jjD3XhBoywT1BVfaNOuwecuWzL3te3Y0iU3kP2hQ7t59emdqA4aQvTk5G1NTSeCIFos/i4sPfXOqkcM8YviaGtz6JaWm5u4/oP2SlZVVTlYW7nNIa9A/l3EMHTLkcV39zfIyTiq5rXhT0x9GjxaL+QGoBWsx4qb63v3lqz7GE4T2S9jqqUlJeDfSAgy3EIJn3uiYmOOnTpFW4+7mtjpqRXDQFExaVGSUpqbmPTnZGZmZUsHbKtwfx6+PmTUz3OAzdGgIQU/xSRsP5h8mrcHL03PeOxHBQUFuri4GOxE3MOUVt48WFuYdPKD3ug1PZImxsaHTpnXUosYMITg/d//wQ1p6uvAlAQfe0dPTc9TwEe3+IiLs7Gyvl5aeOHW6sqrqSsnVhsZG+p4A3Kp/kZw8asQI0oYwYYgDM31sQkJpGQ0pPfDAd4x76ZmVlfaVzktPLdiQYdPeWh8dbW9nS0UdoJ+HDDI4IODH3bsTN2zAxqAiAXziFKRQLXj2HT9u3L7vd6UkJph0g3TKEIIj8c/h4Ufy8iRbt+IajBmWLuiiHRnYJK4uLvMjIw9m52Rs3z5y+DC6YIpOdZkeOLCkUlnZrfLLV65W3b37sPbRxvh4rP5IQeHRwgKciQF+/mPHjPH0cDf40s443TGkB/rj5pp6gaK427wEQy+Xzo6h/xMA/wVr36WQaxynyAAAAABJRU5ErkJggg=="
+}
