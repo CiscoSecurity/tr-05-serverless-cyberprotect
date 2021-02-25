@@ -6,7 +6,7 @@ echo
 echo " Development Dockerfile build script."
 echo
 
-module_name="Cyberprotect"
+module_name="Threatscore | Cyberprotect"
 image_name="tr-05-cyberprotect"
 
 CONFIG_FILE=code/container_settings.json
