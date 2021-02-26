@@ -140,7 +140,7 @@ That is it! Your Serverless Relay is ready to use! Congratulations!
 ## Step 3: Testing (Optional)
 
 If you want to test the application you have to install a couple of extra
-dependencies from the [test-requirements.txt](test-requirements.txt) file:
+dependencies from the [requirements.txt](requirements.txt) file:
 ```
 pip install --upgrade --requirement requirements.txt
 ```
