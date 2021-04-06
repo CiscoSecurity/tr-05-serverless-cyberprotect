@@ -4,6 +4,7 @@ from uuid import uuid4
 import requests
 from flask import Blueprint, current_app, g
 
+from api.bundle import Bundle
 from api.schemas import ObservableSchema
 from api.utils import (
     get_jwt,
@@ -11,7 +12,6 @@ from api.utils import (
     jsonify_data,
     url_for,
     get_response_data,
-    format_docs,
     key_error_handler,
     catch_ssl_errors
 )
@@ -132,8 +132,25 @@ def extract_judgement(output, details):
     return doc
 
 
-@enrich_api.route('/deliberate/observables', methods=['POST'])
 @key_error_handler
+def deliberate(observable):
+    output = get_cyberprotect_outputs(observable)
+
+    result = Bundle()
+    if output:
+        scores = output.get('scores', [])
+        if len(scores) >= current_app.config['CTR_ENTITIES_LIMIT']:
+            scores = scores[:current_app.config['CTR_ENTITIES_LIMIT']]
+
+        for score in scores:
+            # need to check because [[]] can be returned in output
+            if score and score.get('score') is not None:
+                result.add(extract_verdicts(output, score))
+
+    return result
+
+
+@enrich_api.route('/deliberate/observables', methods=['POST'])
 def deliberate_observables():
     _ = get_jwt()
     relay_input = get_json(ObservableSchema(many=True))
@@ -143,32 +160,41 @@ def deliberate_observables():
     if not observables:
         return jsonify_data({})
 
-    g.verdicts = []
-
+    g.bundle = Bundle()
     for observable in observables:
+        g.bundle.merge(deliberate(observable))
 
-        output = get_cyberprotect_outputs(observable)
+    return jsonify_data(g.bundle.json())
 
-        if output:
-            scores = output.get('scores', [])
-            if len(scores) >= current_app.config['CTR_ENTITIES_LIMIT']:
-                scores = scores[:current_app.config['CTR_ENTITIES_LIMIT']]
 
-            for score in scores:
-                # need to check because [[]] can be returned in output
-                if score and score.get('score') is not None:
-                    g.verdicts.append(extract_verdicts(output, score))
+@key_error_handler
+def observe(observable):
+    output = get_cyberprotect_outputs(observable)
 
-    relay_output = {}
+    result = Bundle()
+    if output:
+        scores = output.get('scores', [])
+        if len(scores) >= current_app.config['CTR_ENTITIES_LIMIT']:
+            scores = scores[:current_app.config['CTR_ENTITIES_LIMIT']]
 
-    if g.verdicts:
-        relay_output['verdicts'] = format_docs(g.verdicts)
+        for score in scores:
+            # need to check because [[]] can be returned in output
+            if score and score.get('score') is not None:
+                result.add(extract_verdicts(output, score))
 
-    return jsonify_data(relay_output)
+                details = score['details']
+                if len(details) >= \
+                        current_app.config['CTR_ENTITIES_LIMIT']:
+                    details = \
+                        details[:current_app.config['CTR_ENTITIES_LIMIT']]
+
+                for detail in details:
+                    if detail.get('score') is not None:
+                        result.add(extract_judgement(output, detail))
+    return result
 
 
 @enrich_api.route('/observe/observables', methods=['POST'])
-@key_error_handler
 def observe_observables():
     _ = get_jwt()
     relay_input = get_json(ObservableSchema(many=True))
@@ -178,42 +204,11 @@ def observe_observables():
     if not observables:
         return jsonify_data({})
 
-    g.verdicts = []
-    g.judgements = []
-
+    g.bundle = Bundle()
     for observable in observables:
+        g.bundle.merge(observe(observable))
 
-        output = get_cyberprotect_outputs(observable)
-
-        if output:
-            scores = output.get('scores', [])
-            if len(scores) >= current_app.config['CTR_ENTITIES_LIMIT']:
-                scores = scores[:current_app.config['CTR_ENTITIES_LIMIT']]
-
-            for score in scores:
-                # need to check because [[]] can be returned in output
-                if score and score.get('score') is not None:
-                    g.verdicts.append(extract_verdicts(output, score))
-
-                    details = score['details']
-                    if len(details) >= \
-                            current_app.config['CTR_ENTITIES_LIMIT']:
-                        details = \
-                            details[:current_app.config['CTR_ENTITIES_LIMIT']]
-
-                    for detail in details:
-                        if detail.get('score') is not None:
-                            g.judgements.append(
-                                extract_judgement(output, detail))
-
-    relay_output = {}
-
-    if g.verdicts:
-        relay_output['verdicts'] = format_docs(g.verdicts)
-    if g.judgements:
-        relay_output['judgements'] = format_docs(g.judgements)
-
-    return jsonify_data(relay_output)
+    return jsonify_data(g.bundle.json())
 
 
 @enrich_api.route('/refer/observables', methods=['POST'])

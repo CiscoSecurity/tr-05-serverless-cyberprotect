@@ -145,10 +145,6 @@ def get_json(schema):
     return data
 
 
-def format_docs(docs):
-    return {'count': len(docs), 'docs': docs}
-
-
 def jsonify_data(data):
     return jsonify({'data': data})
 
@@ -159,11 +155,8 @@ def jsonify_error(error):
         'data': {}
     }
 
-    if g.get('verdicts'):
-        data['data'].update({'verdicts': format_docs(g.verdicts)})
-
-    if g.get('judgements'):
-        data['data'].update({'judgements': format_docs(g.judgements)})
+    if g.get('bundle'):
+        data['data'] = g.bundle.json()
 
     if not data['data']:
         data.pop('data')
@@ -179,7 +172,11 @@ def get_response_data(response):
 
     else:
         if response.status_code == HTTPStatus.NOT_FOUND:
-            if data and data.get('error') == "Observable not found":
+            # 404 is returned for both wrong url and no data for observable
+            if (
+                data and "Observable not found"
+                    in data.get('error', {}).get('message')
+            ):
                 return
 
             raise CyberprotectNotFoundError()
