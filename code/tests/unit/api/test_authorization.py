@@ -1,20 +1,19 @@
-from pytest import fixture
-from .utils import headers
 from http import HTTPStatus
+
+from pytest import fixture
 from requests.exceptions import InvalidURL, ConnectionError
 
 from api.utils import (
     NO_AUTH_HEADER,
     WRONG_AUTH_TYPE,
     WRONG_JWKS_HOST,
-    WRONG_PAYLOAD_STRUCTURE,
     JWK_HOST_MISSING,
     WRONG_KEY,
     WRONG_JWT_STRUCTURE,
     WRONG_AUDIENCE,
     KID_NOT_FOUND
 )
-
+from .utils import headers
 from ..conftest import cyberprotect_api_response
 from ..mock_for_tests import (
     EXPECTED_RESPONSE_OF_JWKS_ENDPOINT,
@@ -99,7 +98,9 @@ def test_call_with_wrong_key(
         authorization_errors_expected_payload,
 ):
     cyberprotect_api_request.return_value = \
-        cyberprotect_api_response(payload=RESPONSE_OF_JWKS_ENDPOINT_WITH_WRONG_KEY)
+        cyberprotect_api_response(
+            payload=RESPONSE_OF_JWKS_ENDPOINT_WITH_WRONG_KEY
+        )
 
     response = client.post(
         route, json=valid_json,

@@ -1,3 +1,5 @@
+from functools import wraps
+
 import jwt
 import json
 import requests
@@ -143,10 +145,6 @@ def get_json(schema):
     return data
 
 
-def format_docs(docs):
-    return {'count': len(docs), 'docs': docs}
-
-
 def jsonify_data(data):
     return jsonify({'data': data})
 
@@ -157,11 +155,8 @@ def jsonify_error(error):
         'data': {}
     }
 
-    if g.get('verdicts'):
-        data['data'].update({'verdicts': format_docs(g.verdicts)})
-
-    if g.get('judgements'):
-        data['data'].update({'judgements': format_docs(g.judgements)})
+    if g.get('bundle'):
+        data['data'] = g.bundle.json()
 
     if not data['data']:
         data.pop('data')
@@ -170,12 +165,20 @@ def jsonify_error(error):
 
 
 def get_response_data(response):
+    data = response.json()
 
     if response.ok:
-        return response.json()
+        return data
 
     else:
         if response.status_code == HTTPStatus.NOT_FOUND:
+            # 404 is returned for both wrong url and no data for observable
+            if (
+                data and "Observable not found"
+                    in data.get('error', {}).get('message')
+            ):
+                return
+
             raise CyberprotectNotFoundError()
 
         elif response.status_code > HTTPStatus.INTERNAL_SERVER_ERROR:
@@ -186,6 +189,7 @@ def get_response_data(response):
 
 
 def key_error_handler(func):
+    @wraps(func)
     def wrapper(*args, **kwargs):
         try:
             result = func(*args, **kwargs)
@@ -196,6 +200,7 @@ def key_error_handler(func):
 
 
 def catch_ssl_errors(func):
+    @wraps(func)
     def wrapper(*args, **kwargs):
         try:
             return func(*args, **kwargs)
