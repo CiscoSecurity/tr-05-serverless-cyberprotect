@@ -133,6 +133,7 @@ def extract_judgement(output, details):
 
 
 @enrich_api.route('/deliberate/observables', methods=['POST'])
+@key_error_handler
 def deliberate_observables():
     _ = get_jwt()
     relay_input = get_json(ObservableSchema(many=True))
@@ -155,7 +156,7 @@ def deliberate_observables():
 
             for score in scores:
                 # need to check because [[]] can be returned in output
-                if score and score['score'] is not None:
+                if score and score.get('score') is not None:
                     g.verdicts.append(extract_verdicts(output, score))
 
     relay_output = {}
@@ -167,6 +168,7 @@ def deliberate_observables():
 
 
 @enrich_api.route('/observe/observables', methods=['POST'])
+@key_error_handler
 def observe_observables():
     _ = get_jwt()
     relay_input = get_json(ObservableSchema(many=True))
@@ -184,14 +186,13 @@ def observe_observables():
         output = get_cyberprotect_outputs(observable)
 
         if output:
-
             scores = output.get('scores', [])
             if len(scores) >= current_app.config['CTR_ENTITIES_LIMIT']:
                 scores = scores[:current_app.config['CTR_ENTITIES_LIMIT']]
 
             for score in scores:
                 # need to check because [[]] can be returned in output
-                if score and score['score'] is not None:
+                if score and score.get('score') is not None:
                     g.verdicts.append(extract_verdicts(output, score))
 
                     details = score['details']
@@ -201,7 +202,7 @@ def observe_observables():
                             details[:current_app.config['CTR_ENTITIES_LIMIT']]
 
                     for detail in details:
-                        if detail['score'] is not None:
+                        if detail.get('score') is not None:
                             g.judgements.append(
                                 extract_judgement(output, detail))
 

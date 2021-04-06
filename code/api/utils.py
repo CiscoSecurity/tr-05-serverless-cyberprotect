@@ -1,3 +1,5 @@
+from functools import wraps
+
 import jwt
 import json
 import requests
@@ -170,12 +172,16 @@ def jsonify_error(error):
 
 
 def get_response_data(response):
+    data = response.json()
 
     if response.ok:
-        return response.json()
+        return data
 
     else:
         if response.status_code == HTTPStatus.NOT_FOUND:
+            if data and data.get('error') == "Observable not found":
+                return
+
             raise CyberprotectNotFoundError()
 
         elif response.status_code > HTTPStatus.INTERNAL_SERVER_ERROR:
@@ -186,6 +192,7 @@ def get_response_data(response):
 
 
 def key_error_handler(func):
+    @wraps(func)
     def wrapper(*args, **kwargs):
         try:
             result = func(*args, **kwargs)
@@ -196,6 +203,7 @@ def key_error_handler(func):
 
 
 def catch_ssl_errors(func):
+    @wraps(func)
     def wrapper(*args, **kwargs):
         try:
             return func(*args, **kwargs)
