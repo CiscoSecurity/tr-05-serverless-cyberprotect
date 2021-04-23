@@ -1,10 +1,9 @@
-import os
-
-from __version__ import VERSION
+import json
 
 
 class Config:
-    VERSION = VERSION
+    settings = json.load(open('container_settings.json', 'r'))
+    VERSION = settings["VERSION"]
 
     CYBERPROTECT_API_URL = \
         'https://threatscore.cyberprotect.fr/api/score/{observable}'
@@ -46,14 +45,6 @@ class Config:
     }
 
     CTR_DEFAULT_ENTITIES_LIMIT = 100
-    CTR_ENTITIES_LIMIT = CTR_DEFAULT_ENTITIES_LIMIT
-
-    try:
-        limit = int(os.environ.get('CTR_ENTITIES_LIMIT'))
-        if limit > 0:
-            CTR_ENTITIES_LIMIT = limit
-    except (ValueError, TypeError):
-        pass
 
     CTIM_VALID_DAYS_PERIOD = 7
 
