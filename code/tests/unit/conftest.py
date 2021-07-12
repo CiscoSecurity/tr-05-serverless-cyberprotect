@@ -25,12 +25,16 @@ def valid_jwt(client):
             aud='http://localhost',
             kid='02B1174234C29F8EFB69911438F597FF3FFEE6B7',
             ctr_entities_limit=0,
+            wrong_jwks_host=False,
     ):
         payload = {
             'jwks_host': jwks_host,
             'aud': aud,
             'CTR_ENTITIES_LIMIT': ctr_entities_limit
         }
+
+        if wrong_jwks_host:
+            payload.pop('jwks_host')
 
         return jwt.encode(
             payload, client.application.rsa_private_key, algorithm='RS256',
