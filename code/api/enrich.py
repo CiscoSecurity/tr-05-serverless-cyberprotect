@@ -209,9 +209,3 @@ def observe_observables():
         g.bundle.merge(observe(observable))
 
     return jsonify_data(g.bundle.json())
-
-
-@enrich_api.route('/refer/observables', methods=['POST'])
-def refer_observables():
-    # Not implemented
-    return jsonify_data([])
