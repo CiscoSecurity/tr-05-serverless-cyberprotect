@@ -7,7 +7,7 @@
   "external_references": [
     {
       "label": "How it works",
-      "link": "https://threatscore.cyberprotect.fr/how-it-works"
+      "link": "https://threatscore.cyberprotect.cloud/how-it-works"
     },
     {
       "label": "Cyberprotect",
@@ -15,7 +15,7 @@
     },
     {
       "label": "Threatscore | Cyberprotect",
-      "link": "https://threatscore.cyberprotect.fr/"
+      "link": "https://threatscore.cyberprotect.cloud"
     }
   ],
   "configuration_spec": [
