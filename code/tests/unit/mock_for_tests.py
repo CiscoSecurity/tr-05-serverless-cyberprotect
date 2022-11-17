@@ -190,7 +190,7 @@ EXPECTED_RESPONSE_OBSERVE = {
                     'schema_version': '1.0.17',
                     'severity': 'Medium',
                     'source': 'Threatscore Cyberprotect',
-                    'source_uri': 'https://threatscore.cyberprotect.fr/'
+                    'source_uri': 'https://threatscore.cyberprotect.cloud/'
                                   'search?query=1.1.1.1',
                     'type': 'judgement',
                     'valid_time': {
@@ -211,7 +211,7 @@ EXPECTED_RESPONSE_OBSERVE = {
                     'schema_version': '1.0.17',
                     'severity': 'Medium',
                     'source': 'Threatscore Cyberprotect',
-                    'source_uri': 'https://threatscore.cyberprotect.fr/'
+                    'source_uri': 'https://threatscore.cyberprotect.cloud/'
                                   'search?query=1.1.1.1',
                     'type': 'judgement',
                     'valid_time': {
@@ -232,7 +232,7 @@ EXPECTED_RESPONSE_OBSERVE = {
                     'schema_version': '1.0.17',
                     'severity': 'Medium',
                     'source': 'Threatscore Cyberprotect',
-                    'source_uri': 'https://threatscore.cyberprotect.fr/'
+                    'source_uri': 'https://threatscore.cyberprotect.cloud/'
                                   'search?query=1.1.1.1',
                     'type': 'judgement',
                     'valid_time': {
@@ -253,7 +253,7 @@ EXPECTED_RESPONSE_OBSERVE = {
                     'schema_version': '1.0.17',
                     'severity': 'Medium',
                     'source': 'Threatscore Cyberprotect',
-                    'source_uri': 'https://threatscore.cyberprotect.fr/'
+                    'source_uri': 'https://threatscore.cyberprotect.cloud/'
                                   'search?query=1.1.1.1',
                     'type': 'judgement',
                     'valid_time': {
@@ -303,7 +303,7 @@ EXPECTED_RESPONSE_OBSERVE_WITH_LIMIT_1 = {
                     'severity': 'Medium',
                     'source': 'Threatscore Cyberprotect',
                     'source_uri':
-                        'https://threatscore.cyberprotect.fr/'
+                        'https://threatscore.cyberprotect.cloud/'
                         'search?query=1.1.1.1',
                     'type': 'judgement',
                     'valid_time': {

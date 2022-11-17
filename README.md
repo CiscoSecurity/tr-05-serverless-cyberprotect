@@ -6,7 +6,7 @@ If you wish to deploy in AWS, use [this](https://github.com/CiscoSecurity/tr-05-
 # Threatscore | Cyberprotect Relay (Cisco Hosted)
 
 Concrete Relay implementation using
-[Threatscore | Cyberprotect](https://threatscore.cyberprotect.fr/)
+[Threatscore | Cyberprotect](https://threatscore.cyberprotect.cloud/)
 as a third-party Cyber Threat Intelligence service provider.
 
 The Relay itself is just a simple application written in Python that can be

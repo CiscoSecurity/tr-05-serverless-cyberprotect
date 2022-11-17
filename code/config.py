@@ -6,9 +6,9 @@ class Config:
     VERSION = settings["VERSION"]
 
     CYBERPROTECT_API_URL = \
-        'https://threatscore.cyberprotect.fr/api/score/{observable}'
+        'https://threatscore.cyberprotect.cloud/api/score/{observable}'
     CYBERPROTECT_UI_URL = \
-        'https://threatscore.cyberprotect.fr/search?query={observable}'
+        'https://threatscore.cyberprotect.cloud/search?query={observable}'
 
     CYBERPROTECT_HEADERS = {
         'User-Agent': ('SecureX Threat Response Integrations '
